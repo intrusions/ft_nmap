@@ -21,12 +21,17 @@ CFLAGS_DBG :=                       \
     -fstack-protector-strong        \
     -fno-optimize-sibling-calls 
 
-SRCS :=                             \
-    core/print/print_man.c          \
-    core/parsing/parse_arg.c        \
-    core/parsing/parse_ports.c      \
-    core/utils/ft_split.c           \
-    core/utils/str_is_digit.c       \
-    core/utils/free_split.c         \
-    core/utils/is_odd.c             \
+SRCS :=                                \
+    core/print/print_man.c             \
+    core/parsing/parse_arg.c           \
+    core/parsing/parse_ports.c         \
+    core/parsing/parse_ip.c            \
+    core/parsing/parse_speedup.c       \
+    core/parsing/parse_scan.c          \
+    core/network/reverse_dns.c         \
+    core/socket/socket_init.c          \
+    core/utils/ft_split.c              \
+    core/utils/str_is_digit.c          \
+    core/utils/free_split.c            \
+    core/utils/is_odd.c                \
     debug/print_options.c

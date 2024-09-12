@@ -14,20 +14,38 @@
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
+#include <errno.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+
+#include <arpa/inet.h>
 
 
 // ========================================================================= //
 //                                   Define                                  //
 // ========================================================================= //
 
-#define SIZE_PORTS_ARRAY    1024
-#define MAX_PORT_VALUE      65535
+#define SIZE_PORTS_ARRAY       1024
+
+#define MAX_PORT_VALUE         65535
+#define MAX_SPEEDUP_VALUE      250
+
+#define SCAN_TYPE_SYN       0x1 << 0
+#define SCAN_TYPE_NULL      0X1 << 1
+#define SCAN_TYPE_ACK       0X1 << 2
+#define SCAN_TYPE_FIN       0X1 << 3
+#define SCAN_TYPE_XMAS      0X1 << 4
+#define SCAN_TYPE_UDP       0X1 << 5
+#define SCAN_TYPE_UNKNOW    0X1 << 6
 
 
 // ========================================================================= //
 //                                   Macro                                   //
 // ========================================================================= //
 
+#define __log_error(error) (void)fprintf(stderr, "%s: %s\n", error, strerror(errno))
 
 
 // ========================================================================= //
@@ -44,20 +62,30 @@ typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
 
+typedef struct sockaddr_in  sockaddr_in;
+typedef struct addrinfo     addrinfo;
+
 
 // ========================================================================= //
 //                                  Structure                                //
 // ========================================================================= //
 
 typedef struct {
-    char    addr[INET6_ADDRSTRLEN];
-    char    *file;
-    u8      speedup;
-    u16     ports[SIZE_PORTS_ARRAY];
-    u16     n_ports;
+    char *addr_in;
+    char addr[INET6_ADDRSTRLEN];
+    char *file;
+    u8 speedup;
+    u16 ports[SIZE_PORTS_ARRAY];
+    u16 n_ports;
+    u32 scan_type;
+    bool debug_mode;
 } t_options;
 
 typedef struct {
+    i32 sockfd;
+    u16 pid;
+
+    sockaddr_in dest;
     t_options opts;
 
 } t_global_data;
@@ -75,13 +103,42 @@ void print_man(void);
 /*
 * main function about arguments parsing.
 */
-bool parse_arg(i32 ac, char **av, t_options *opts);
+bool parse_arg(i32 ac, char **av, t_global_data *data);
 
 
 /*
 * dedicated function about ports argument parsing.
 */
 bool parse_ports_from_arg(char *arg, t_options *opts);
+
+
+/*
+* dedicated function about ip argument parsing.
+*/
+bool parse_ip_from_arg(char *ip, t_global_data *data);
+
+/*
+* dedicated function about speedup argument parsing.
+*/
+bool parse_speedup_from_arg(char *speedup, t_options *opts);
+
+
+/*
+* dedicated function about speedup argument parsing.
+*/
+bool parse_scan_from_arg(char *scan, t_options *opts);
+
+
+/*
+* creat and initialize raw socket.
+*/
+bool socket_initialization(t_global_data *data);
+
+
+/*
+* reverse dns function.
+*/
+bool reverse_dns(char *addr_in, char *addr);
 
 
 /*

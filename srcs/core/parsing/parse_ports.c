@@ -92,7 +92,6 @@ bool parse_ports_from_arg(char *arg, t_options *opts)
         }
     }
 
-    print_options(opts);
     free_split(comma_splitted);
     return true;
 }
