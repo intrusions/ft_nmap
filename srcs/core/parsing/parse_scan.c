@@ -23,13 +23,12 @@ static bool process_scan_string(char *scan_str, t_options *opts)
 {
     u32 scan_type_bit = what_type_scan(scan_str);
     
-    if (scan_type_bit != SCAN_TYPE_UNKNOW) {
-        opts->scan_type |= scan_type_bit;
-    } else {
+    if (scan_type_bit == SCAN_TYPE_UNKNOW) {
         fprintf(stderr, "%s scan is not valid.\n", scan_str);
         return false;
     }
-    
+
+    opts->scan_type |= scan_type_bit;
     return true;
 }
 
