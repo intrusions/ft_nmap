@@ -39,9 +39,12 @@ bool parse_scan_from_arg(char *scan, t_options *opts)
         return false;
     
     for (u8 i = 0; comma_splitted[i]; i++) {
-        if (!process_scan_string(comma_splitted[i], opts))
+        if (!process_scan_string(comma_splitted[i], opts)) {
+            free_split(comma_splitted);
             return false;
+        }
     }
 
+    free_split(comma_splitted);
     return true;
 }

@@ -22,17 +22,12 @@ static bool process_arg_parsing(char **av, i32 ac, t_global_data *data)
         if (!is_valid_arg(av[i]))
             return false;
 
-        if (!strcmp(av[i], "--ports") && !parse_ports_from_arg(av[i + 1], &data->opts)) {
-            return false;
-        } else if (!strcmp(av[i], "--ip") && !parse_ip_from_arg(av[i + 1], data)) {
-            return false;
-        } else if (!strcmp(av[i], "--speedup") && !parse_speedup_from_arg(av[i + 1], &data->opts)) {
-            return false;
-        } else if (!strcmp(av[i], "--scan") && !parse_scan_from_arg(av[i + 1], &data->opts)) {
-            return false;
-        } else if (!strcmp(av[i], "--debug") && !parse_debug_from_arg(av[i + 1], &data->opts)) {
-            return false;
-        }
+        if ((!strcmp(av[i], "--ports") && !parse_ports_from_arg(av[i + 1], &data->opts))
+                || ((!strcmp(av[i], "--ip") && !parse_ip_from_arg(av[i + 1], data)))
+                || ((!strcmp(av[i], "--speedup") && !parse_speedup_from_arg(av[i + 1], &data->opts)))
+                || ((!strcmp(av[i], "--scan") && !parse_scan_from_arg(av[i + 1], &data->opts)))
+                || ((!strcmp(av[i], "--debug") && !parse_debug_from_arg(av[i + 1], &data->opts))))
+            return false; 
     }
 
     return true;
