@@ -12,8 +12,8 @@ static bool is_valid_speedup(char *speedup_str, u8 *speed_val)
         fprintf(stderr, "%ld is not a valid value. max value is %d.\n", val, MAX_SPEEDUP_VALUE);
         return false;
     }
-    *speed_val = (u8)val;
 
+    *speed_val = (u8)val;
     return true;
 }
 

@@ -2,21 +2,20 @@
 
 static u32 what_type_scan(char *scan_str)
 {
-    if (!strcmp(scan_str, "SYN")) {
+    if (!strcmp(scan_str, "SYN"))
         return SCAN_TYPE_SYN;
-    } else if (!strcmp(scan_str, "NULL")) {
+    else if (!strcmp(scan_str, "NULL"))
         return SCAN_TYPE_NULL;
-    } else if (!strcmp(scan_str, "ACK")) {
+    else if (!strcmp(scan_str, "ACK"))
         return SCAN_TYPE_ACK;
-    } else if (!strcmp(scan_str, "FIN")) {
+    else if (!strcmp(scan_str, "FIN"))
         return SCAN_TYPE_FIN;
-    } else if (!strcmp(scan_str, "XMAS")) {
+    else if (!strcmp(scan_str, "XMAS"))
         return SCAN_TYPE_XMAS;
-    } else if (!strcmp(scan_str, "UDP")) {
+    else if (!strcmp(scan_str, "UDP"))
         return SCAN_TYPE_UDP;
-    } else {
+    else
         return SCAN_TYPE_UNKNOW;
-    }
 }
 
 static bool process_scan_string(char *scan_str, t_options *opts)

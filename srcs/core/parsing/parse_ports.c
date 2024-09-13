@@ -12,8 +12,8 @@ static bool is_valid_port(char *port_str, u16 *port_val)
         fprintf(stderr, "%ld is not a valid value. max value is %d.\n", val, MAX_PORT_VALUE);
         return false;
     }
-    *port_val = (u16)val;
 
+    *port_val = (u16)val;
     return true;
 }
 
@@ -23,6 +23,7 @@ static bool add_port(u16 *ports, u16 *port_index, u16 port_value)
         fprintf(stderr, "Number of ports cannot exceed %d.\n", SIZE_PORTS_ARRAY);
         return false;
     }
+
     ports[(*port_index)++] = port_value;
     return true;
 }

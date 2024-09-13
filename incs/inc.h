@@ -90,15 +90,10 @@ typedef struct {
 
 } t_global_data;
 
+
 // ========================================================================= //
 //                                  Prototype                                //
 // ========================================================================= //
-
-/*
-* print manual of the program.
-*/
-void print_man(void);
-
 
 /*
 * main function about arguments parsing.
@@ -144,6 +139,12 @@ bool socket_initialization(t_global_data *data);
 * reverse dns function.
 */
 bool reverse_dns(char *addr_in, char *addr);
+
+
+/*
+* print manual of the program.
+*/
+void print_man(void);
 
 
 /*
