@@ -128,6 +128,11 @@ bool parse_speedup_from_arg(char *speedup, t_options *opts);
 */
 bool parse_scan_from_arg(char *scan, t_options *opts);
 
+/*
+* dedicated function about debug argument parsing.
+*/
+bool parse_debug_from_arg(char *debug, t_options *opts);
+
 
 /*
 * creat and initialize raw socket.

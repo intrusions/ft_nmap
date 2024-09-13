@@ -28,6 +28,7 @@ SRCS :=                                \
     core/parsing/parse_ip.c            \
     core/parsing/parse_speedup.c       \
     core/parsing/parse_scan.c          \
+    core/parsing/parse_debug.c         \
     core/network/reverse_dns.c         \
     core/socket/socket_init.c          \
     core/utils/ft_split.c              \

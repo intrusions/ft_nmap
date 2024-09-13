@@ -30,10 +30,8 @@ static bool add_port(u16 *ports, u16 *port_index, u16 port_value)
 static bool validate_and_parse_port(char *port, u16 *ports, u16 *port_index)
 {
     u16 val;
-    if (!is_valid_port(port, &val))
-        return false;
-    
-    if (!add_port(ports, port_index, val))
+    if (!is_valid_port(port, &val)
+            || !add_port(ports, port_index, val))
         return false;
     
     return true;
