@@ -87,7 +87,6 @@ typedef struct {
 
     sockaddr_in dest;
     t_options opts;
-
 } t_global_data;
 
 
@@ -111,6 +110,12 @@ bool parse_ports_from_arg(char *arg, t_options *opts);
 * dedicated function about ip argument parsing.
 */
 bool parse_ip_from_arg(char *ip, t_global_data *data);
+
+/*
+* dedicated function about file argument parsing.
+*/
+bool parse_file_from_arg(char *file, t_options *opts);
+
 
 /*
 * dedicated function about speedup argument parsing.

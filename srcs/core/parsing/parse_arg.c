@@ -6,6 +6,7 @@ static bool is_valid_arg(char *arg)
             && strcmp(arg, "--ports")
             && strcmp(arg, "--ip")
             && strcmp(arg, "--speedup")
+            && strcmp(arg, "--file")
             && strcmp(arg, "--scan"))
             {
                 fprintf(stderr, "%s is not a valid parameter. check man for more details.\n", arg);
@@ -26,6 +27,7 @@ static bool process_arg_parsing(char **av, i32 ac, t_global_data *data)
                 || ((!strcmp(av[i], "--ip") && !parse_ip_from_arg(av[i + 1], data)))
                 || ((!strcmp(av[i], "--speedup") && !parse_speedup_from_arg(av[i + 1], &data->opts)))
                 || ((!strcmp(av[i], "--scan") && !parse_scan_from_arg(av[i + 1], &data->opts)))
+                || ((!strcmp(av[i], "--file") && !parse_file_from_arg(av[i + 1], &data->opts)))
                 || ((!strcmp(av[i], "--debug") && !parse_debug_from_arg(av[i + 1], &data->opts))))
             return false; 
     }
