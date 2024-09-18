@@ -33,17 +33,19 @@ static bool process_scan_string(char *scan_str, t_options *opts)
 
 bool parse_scan_from_arg(char *scan, t_options *opts)
 {
+    opts->scan_type = 0x00;
+    
     char **comma_splitted = split(scan, ",");
     if (!comma_splitted)
         return false;
     
     for (u8 i = 0; comma_splitted[i]; i++) {
         if (!process_scan_string(comma_splitted[i], opts)) {
-            free_split(comma_splitted);
+            free_str_arr(comma_splitted);
             return false;
         }
     }
 
-    free_split(comma_splitted);
+    free_str_arr(comma_splitted);
     return true;
 }

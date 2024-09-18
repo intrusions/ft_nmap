@@ -68,11 +68,11 @@ static bool process_port_string(char *port_string, u16 *ports, u16 *port_index)
             goto error;
     }
 
-    free_split(dash_splitted);
+    free_str_arr(dash_splitted);
     return true;
 
 error:
-    free_split(dash_splitted);
+    free_str_arr(dash_splitted);
     return false;
 }
 
@@ -86,11 +86,11 @@ bool parse_ports_from_arg(char *arg, t_options *opts)
 
     for (u8 i = 0; comma_splitted[i]; i++) {
         if (!process_port_string(comma_splitted[i], opts->ports, &opts->n_ports)) {
-            free_split(comma_splitted);
+            free_str_arr(comma_splitted);
             return false;
         }
     }
 
-    free_split(comma_splitted);
+    free_str_arr(comma_splitted);
     return true;
 }

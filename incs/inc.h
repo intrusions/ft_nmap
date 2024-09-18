@@ -33,12 +33,12 @@
 #define MAX_SPEEDUP_VALUE      250
 
 #define SCAN_TYPE_SYN       0x1 << 0
-#define SCAN_TYPE_NULL      0X1 << 1
-#define SCAN_TYPE_ACK       0X1 << 2
-#define SCAN_TYPE_FIN       0X1 << 3
-#define SCAN_TYPE_XMAS      0X1 << 4
-#define SCAN_TYPE_UDP       0X1 << 5
-#define SCAN_TYPE_UNKNOW    0X1 << 6
+#define SCAN_TYPE_NULL      0x1 << 1
+#define SCAN_TYPE_ACK       0x1 << 2
+#define SCAN_TYPE_FIN       0x1 << 3
+#define SCAN_TYPE_XMAS      0x1 << 4
+#define SCAN_TYPE_UDP       0x1 << 5
+#define SCAN_TYPE_UNKNOW    0x1 << 6
 
 
 // ========================================================================= //
@@ -71,8 +71,8 @@ typedef struct addrinfo     addrinfo;
 // ========================================================================= //
 
 typedef struct {
-    char *addr_in;
-    char addr[INET6_ADDRSTRLEN];
+    char **addr_in;
+    char *addr[INET6_ADDRSTRLEN];
     char *file;
     u8 speedup;
     u16 ports[SIZE_PORTS_ARRAY];
@@ -109,12 +109,12 @@ bool parse_ports_from_arg(char *arg, t_options *opts);
 /*
 * dedicated function about ip argument parsing.
 */
-bool parse_ip_from_arg(char *ip, t_global_data *data);
+bool parse_ip_from_arg(char *ip, t_global_data *data, bool *ip_is_set);
 
 /*
 * dedicated function about file argument parsing.
 */
-bool parse_file_from_arg(char *file, t_options *opts);
+bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set);
 
 
 /*
@@ -163,7 +163,7 @@ void print_options(t_options *opts);
 * some utils.
 */
 char **split(char *str, char *charset);
-void free_split(char **arr);
+void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
 

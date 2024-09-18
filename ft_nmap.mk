@@ -34,6 +34,8 @@ SRCS :=                                \
     core/socket/socket_init.c          \
     core/utils/ft_split.c              \
     core/utils/str_is_digit.c          \
-    core/utils/free_split.c            \
+    core/utils/free_str_arr.c            \
     core/utils/is_odd.c                \
+    lib/gnl/get_next_line.c            \
+    lib/gnl/get_next_line_utils.c      \
     debug/print_options.c

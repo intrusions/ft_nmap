@@ -14,8 +14,8 @@ void print_options(t_options *opts)
     printf("\n\n");
 
     printf("Address:\n");
-    printf("    - addr_in  : %s\n", opts->addr_in);
-    printf("    - addr     : %s\n\n", opts->addr);
+    // printf("    - addr_in  : %s\n", opts->addr_in);
+    // printf("    - addr     : %s\n\n", opts->addr);
 
     printf("Speedup:\n");
     printf("    - value    : %d\n", opts->speedup);
