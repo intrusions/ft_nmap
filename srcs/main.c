@@ -3,6 +3,8 @@
 bool nmap(t_global_data *data)
 {
     print_nmap_infos(data->opts);
+
+    // (void)process_nmap(data);
     
     return true;
 }

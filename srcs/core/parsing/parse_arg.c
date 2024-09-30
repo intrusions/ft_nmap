@@ -48,9 +48,11 @@ bool parse_arg(i32 ac, char **av, t_global_data *data)
     }
 
     bool ip_is_set = false;
-    if (!process_arg_parsing(av, ac, data, &ip_is_set))
+    if (!process_arg_parsing(av, ac, data, &ip_is_set)) {
+        if (ip_is_set)
+            free_str_arr(data->opts.addr_in);
         return false;
-
+    }
 
     if (!ip_is_set) {
         fprintf(stderr, "you need to specify an ip.\n");
