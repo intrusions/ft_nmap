@@ -36,8 +36,12 @@ static bool count_line_in_file(char *file, i16 *file_line_count)
 
 bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set)
 {
-    if (*ip_is_set)
+    if (*ip_is_set) {
+
         fprintf(stderr, "you can't use `--ip` and `--file` at the same time.\n");
+        free_str_arr(opts->addr_in);
+        return false;
+    }
 
     i16 file_line_count = 0;
     if (!count_line_in_file(file, &file_line_count))

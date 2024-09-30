@@ -133,6 +133,11 @@ bool parse_scan_from_arg(char *scan, t_options *opts);
 */
 bool parse_debug_from_arg(char *debug, t_options *opts);
 
+/*
+* function to set the default value of t_options stuct.
+*/
+void set_default_opts_val(t_options *opts);
+
 
 /*
 * creat and initialize raw socket.
@@ -151,6 +156,10 @@ bool reverse_dns(char *addr_in, char *addr);
 */
 void print_man(void);
 
+/*
+* print first lines resume before the scan launch.
+*/
+void print_nmap_infos(t_options opts);
 
 /*
 * [DEBUG]

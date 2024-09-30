@@ -23,6 +23,7 @@ CFLAGS_DBG :=                       \
 
 SRCS :=                                \
     core/print/print_man.c             \
+    core/print/print_nmap_infos.c      \
     core/parsing/parse_arg.c           \
     core/parsing/parse_ports.c         \
     core/parsing/parse_ip.c            \
@@ -30,11 +31,12 @@ SRCS :=                                \
     core/parsing/parse_speedup.c       \
     core/parsing/parse_scan.c          \
     core/parsing/parse_debug.c         \
+    core/parsing/set_default_opts.c    \
     core/network/reverse_dns.c         \
     core/socket/socket_init.c          \
     core/utils/ft_split.c              \
     core/utils/str_is_digit.c          \
-    core/utils/free_str_arr.c            \
+    core/utils/free_str_arr.c          \
     core/utils/is_odd.c                \
     lib/gnl/get_next_line.c            \
     lib/gnl/get_next_line_utils.c      \

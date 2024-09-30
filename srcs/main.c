@@ -1,19 +1,10 @@
 #include "inc.h"
 
-void set_default_opts_val(t_options *opts)
+bool nmap(t_global_data *data)
 {
-    opts->speedup = 0;
-    opts->n_ports = 1024;
-    opts->debug_mode = false;
-    opts->scan_type = SCAN_TYPE_ACK
-                        | SCAN_TYPE_FIN
-                        | SCAN_TYPE_NULL
-                        | SCAN_TYPE_SYN
-                        | SCAN_TYPE_UDP
-                        | SCAN_TYPE_XMAS;
+    print_nmap_infos(data->opts);
     
-    for (u16 i = 0; i < SIZE_PORTS_ARRAY; i++)
-        opts->ports[i] = i + 1;
+    return true;
 }
 
 int main(int ac, char **av)
@@ -34,7 +25,7 @@ int main(int ac, char **av)
             )
         return EXIT_FAILURE;
     
-    // process nmap
+    (void)nmap(&g_data);
 
     free_str_arr(g_data.opts.addr_in);
     return EXIT_SUCCESS;
