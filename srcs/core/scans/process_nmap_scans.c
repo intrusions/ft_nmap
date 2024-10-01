@@ -34,7 +34,9 @@ bool process_nmap_scans(t_global_data *data)
 
 
     for (u8 addr_index = 0; data->opts.addr[addr_index]; addr_index++) {
-        fprintf(stdout, "[*] %s scan :\n", data->opts.addr[addr_index]);
+        fprintf(stdout, "[*] %s (%s) scan :\n",
+                data->opts.addr_in[addr_index],
+                data->opts.addr[addr_index]);
 
         i32 tcp_sockfd, udp_sockfd;
         if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd)) {

@@ -32,5 +32,5 @@ void print_nmap_infos(t_options opts)
 
     /* threads */
     fprintf(stdout, "[*] No of threads        : %d\n", opts.speedup);
-    fprintf(stdout, "-------------------------------------------------------------------\n\n");
+    print_dash_line();
 }

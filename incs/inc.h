@@ -17,6 +17,7 @@
 #include <ctype.h>
 #include <limits.h>
 #include <errno.h>
+#include <time.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -75,6 +76,7 @@ typedef struct sockaddr     sockaddr;
 typedef struct addrinfo     addrinfo;
 typedef struct tcphdr       tcphdr;
 typedef struct udphdr       udphdr;
+typedef struct timespec     timespec;
 
 
 // ========================================================================= //
@@ -230,6 +232,7 @@ char **split(char *str, char *charset);
 void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
+void print_dash_line();
 
 
 #endif /* __INC_H__ */
