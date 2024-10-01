@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
@@ -31,6 +32,8 @@
 
 #define MAX_PORT_VALUE         65535
 #define MAX_SPEEDUP_VALUE      250
+
+#define SOURCE_PORT            1337
 
 #define SCAN_TYPE_SYN       0x1 << 0
 #define SCAN_TYPE_NULL      0x1 << 1
@@ -63,6 +66,7 @@ typedef int32_t i32;
 typedef int64_t i64;
 
 typedef struct sockaddr_in  sockaddr_in;
+typedef struct sockaddr     sockaddr;
 typedef struct addrinfo     addrinfo;
 typedef struct tcphdr       tcphdr;
 
@@ -83,14 +87,14 @@ typedef struct {
 } t_options;
 
 typedef struct {
-    tcphdr *hdr;
+    tcphdr hdr;
 } t_tcp_packet;
 
 typedef struct {
-    i32 sockfd;
-    u16 pid;
+    // i32 sockfd;
+    // u16 pid;
 
-    sockaddr_in dest;
+    // sockaddr_in dest;
     t_options opts;
 } t_global_data;
 
@@ -158,6 +162,21 @@ bool socket_initialization(t_global_data *data);
 * and fill `addr` with response.
 */
 bool reverse_all_dns(t_global_data *data);
+
+/*
+* open tcp raw socket.
+*/
+bool open_tcp_sockfd(i32 *sockfd);
+
+/*
+* process nmap scans.
+*/
+bool process_nmap_scans(t_global_data *data);
+
+/*
+* free `addr`, `addr_in` and `sockfd` if it open.
+*/
+void clean_all_and_exit(t_global_data *data, i32 sockfd);
 
 
 /*

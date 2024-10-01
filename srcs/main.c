@@ -5,8 +5,8 @@ bool nmap(t_global_data *data)
     print_nmap_infos(data->opts);
     fprintf(stdout, "[Scanning]\n");
 
+    (void)process_nmap_scans(data);
 
-    
     return true;
 }
 
@@ -22,10 +22,7 @@ int main(int ac, char **av)
         return EXIT_FAILURE;
     }
 
-    if (!parse_arg(ac, av, &g_data)
-            || !reverse_all_dns(&g_data)
-            // || !socket_initialization(&g_data)
-            )
+    if (!parse_arg(ac, av, &g_data) || !reverse_all_dns(&g_data))
         return EXIT_FAILURE;
     
     (void)nmap(&g_data);
