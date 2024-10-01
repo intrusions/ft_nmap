@@ -21,6 +21,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+#include <pcap.h>
+
 #include <arpa/inet.h>
 
 
@@ -42,6 +44,8 @@
 #define SCAN_TYPE_XMAS      0x1 << 4
 #define SCAN_TYPE_UDP       0x1 << 5
 #define SCAN_TYPE_UNKNOW    0x1 << 6
+
+#define NUM_SCAN_TYPE   6
 
 
 // ========================================================================= //
@@ -177,13 +181,9 @@ bool process_nmap_scans(t_global_data *data);
 
 
 /*
-* send a packet specified per `type`, to `port`.
+* send a packet specified per `scan_type`, to `port`.
 */
-bool send_syn_packet(i32 sockfd, sockaddr_in *dest, u16 port);
-bool send_fin_packet(i32 sockfd, sockaddr_in *dest, u16 port);
-bool send_null_packet(i32 sockfd, sockaddr_in *dest, u16 port);
-bool send_xmas_packet(i32 sockfd, sockaddr_in *dest, u16 port);
-bool send_ack_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
 
 
 /*
