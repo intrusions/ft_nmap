@@ -33,6 +33,7 @@ SRCS :=                                \
     core/parsing/parse_debug.c         \
     core/parsing/set_default_opts.c    \
     core/scans/process_nmap_scans.c    \
+    core/scans/send_packet.c           \
     core/network/reverse_dns.c         \
     core/socket/socket_init.c          \
     core/socket/open_sockfd.c          \

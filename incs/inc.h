@@ -163,15 +163,28 @@ bool socket_initialization(t_global_data *data);
 */
 bool reverse_all_dns(t_global_data *data);
 
+
 /*
 * open tcp raw socket.
 */
 bool open_tcp_sockfd(i32 *sockfd);
 
+
 /*
 * process nmap scans.
 */
 bool process_nmap_scans(t_global_data *data);
+
+
+/*
+* send a packet specified per `type`, to `port`.
+*/
+bool send_syn_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+bool send_fin_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+bool send_null_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+bool send_xmas_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+bool send_ack_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+
 
 /*
 * free `addr`, `addr_in` and `sockfd` if it open.
