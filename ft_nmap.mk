@@ -43,6 +43,6 @@ SRCS :=                                \
     core/utils/is_odd.c                \
     core/utils/checksum.c              \
     core/utils/clean_all_and_exit.c    \
-    lib/gnl/get_next_line.c            \
-    lib/gnl/get_next_line_utils.c      \
+    lib/ngnl/get_next_line.c            \
+    lib/ngnl/get_next_line_utils.c      \
     debug/print_options.c
