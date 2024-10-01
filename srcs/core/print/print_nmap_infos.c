@@ -7,7 +7,7 @@ void print_nmap_infos(t_options opts)
     /* ip address */
     fprintf(stdout, "[*] Target Ip-Address :\n");
     for (u8 i = 0; opts.addr_in[i]; i++)
-        fprintf(stdout, "       - %s", opts.addr_in[i]);
+        fprintf(stdout, "       - %s\n", opts.addr_in[i]);
     fprintf(stdout, "\n");
 
 
@@ -32,4 +32,5 @@ void print_nmap_infos(t_options opts)
 
     /* threads */
     fprintf(stdout, "[*] No of threads        : %d\n", opts.speedup);
+    fprintf(stdout, "\n");
 }

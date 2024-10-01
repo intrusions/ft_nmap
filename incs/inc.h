@@ -64,6 +64,7 @@ typedef int64_t i64;
 
 typedef struct sockaddr_in  sockaddr_in;
 typedef struct addrinfo     addrinfo;
+typedef struct tcphdr       tcphdr;
 
 
 // ========================================================================= //
@@ -72,7 +73,7 @@ typedef struct addrinfo     addrinfo;
 
 typedef struct {
     char **addr_in;
-    char *addr[INET6_ADDRSTRLEN];
+    char **addr;
     char *file;
     u8 speedup;
     u16 ports[SIZE_PORTS_ARRAY];
@@ -80,6 +81,10 @@ typedef struct {
     u32 scan_type;
     bool debug_mode;
 } t_options;
+
+typedef struct {
+    tcphdr *hdr;
+} t_tcp_packet;
 
 typedef struct {
     i32 sockfd;
@@ -111,6 +116,7 @@ bool parse_ports_from_arg(char *arg, t_options *opts);
 */
 bool parse_ip_from_arg(char *ip, t_global_data *data, bool *ip_is_set);
 
+
 /*
 * dedicated function about file argument parsing.
 */
@@ -128,10 +134,12 @@ bool parse_speedup_from_arg(char *speedup, t_options *opts);
 */
 bool parse_scan_from_arg(char *scan, t_options *opts);
 
+
 /*
 * dedicated function about debug argument parsing.
 */
 bool parse_debug_from_arg(char *debug, t_options *opts);
+
 
 /*
 * function to set the default value of t_options stuct.
@@ -146,9 +154,10 @@ bool socket_initialization(t_global_data *data);
 
 
 /*
-* reverse dns function.
+* reverse the dns for all `addr_in` in t_options struct 
+* and fill `addr` with response.
 */
-bool reverse_dns(char *addr_in, char *addr);
+bool reverse_all_dns(t_global_data *data);
 
 
 /*
@@ -156,13 +165,14 @@ bool reverse_dns(char *addr_in, char *addr);
 */
 void print_man(void);
 
+
 /*
 * print first lines resume before the scan launch.
 */
 void print_nmap_infos(t_options opts);
 
+
 /*
-* [DEBUG]
 * print t_options structure value.
 */
 void print_options(t_options *opts);
