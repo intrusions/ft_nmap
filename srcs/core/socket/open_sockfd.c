@@ -5,3 +5,9 @@ bool open_tcp_sockfd(i32 *sockfd)
     *sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_TCP);
     return (!(*sockfd < 0));
 }
+
+bool open_udp_sockfd(i32 *sockfd)
+{
+    *sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
+    return (!(*sockfd < 0));
+}

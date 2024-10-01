@@ -24,3 +24,21 @@ bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type)
 
     return true;
 }
+
+bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port)
+{
+    t_udp_packet packet;
+    memset(&packet, 0, sizeof(t_udp_packet));
+
+    packet.hdr.source = htons(SOURCE_PORT);
+    packet.hdr.dest = htons(port);
+    packet.hdr.len = htons(sizeof(t_udp_packet));
+
+
+    if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {
+        __log_error("sendto error");
+        return false;        
+    }
+
+    return true;
+}

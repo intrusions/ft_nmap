@@ -5,6 +5,7 @@ bool nmap(t_global_data *data)
     print_nmap_infos(data->opts);
     fprintf(stdout, "[Scanning]\n");
 
+    
     (void)process_nmap_scans(data);
 
     return true;
@@ -13,8 +14,6 @@ bool nmap(t_global_data *data)
 int main(int ac, char **av)
 {
     t_global_data g_data;
-    set_default_opts_val(&g_data.opts);
-
     ac--, av++;
 
     if (!ac) {
@@ -22,6 +21,7 @@ int main(int ac, char **av)
         return EXIT_FAILURE;
     }
 
+    set_default_opts_val(&g_data.opts);
     if (!parse_arg(ac, av, &g_data) || !reverse_all_dns(&g_data))
         return EXIT_FAILURE;
     

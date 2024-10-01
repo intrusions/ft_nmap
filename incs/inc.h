@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <netinet/udp.h>
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
@@ -73,6 +74,7 @@ typedef struct sockaddr_in  sockaddr_in;
 typedef struct sockaddr     sockaddr;
 typedef struct addrinfo     addrinfo;
 typedef struct tcphdr       tcphdr;
+typedef struct udphdr       udphdr;
 
 
 // ========================================================================= //
@@ -93,6 +95,10 @@ typedef struct {
 typedef struct {
     tcphdr hdr;
 } t_tcp_packet;
+
+typedef struct {
+    udphdr hdr;
+} t_udp_packet;
 
 typedef struct {
     // i32 sockfd;
@@ -155,11 +161,6 @@ bool parse_debug_from_arg(char *debug, t_options *opts);
 void set_default_opts_val(t_options *opts);
 
 
-/*
-* creat and initialize raw socket.
-*/
-bool socket_initialization(t_global_data *data);
-
 
 /*
 * reverse the dns for all `addr_in` in t_options struct 
@@ -175,15 +176,27 @@ bool open_tcp_sockfd(i32 *sockfd);
 
 
 /*
+* open udp raw socket.
+*/
+bool open_udp_sockfd(i32 *sockfd);
+
+
+/*
 * process nmap scans.
 */
 bool process_nmap_scans(t_global_data *data);
 
 
 /*
-* send a packet specified per `scan_type`, to `port`.
+* send a tcp packet specified per `scan_type`, to `port`.
 */
 bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
+
+
+/*
+* send a udp packet specified per to `port`.
+*/
+bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port);
 
 
 /*

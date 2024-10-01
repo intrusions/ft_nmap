@@ -35,7 +35,6 @@ SRCS :=                                \
     core/scans/process_nmap_scans.c    \
     core/scans/send_packet.c           \
     core/network/reverse_dns.c         \
-    core/socket/socket_init.c          \
     core/socket/open_sockfd.c          \
     core/utils/ft_split.c              \
     core/utils/str_is_digit.c          \
