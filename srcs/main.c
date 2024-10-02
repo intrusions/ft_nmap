@@ -33,13 +33,17 @@ int main(int ac, char **av)
         return EXIT_FAILURE;
     }
 
+    if (getuid()) {
+        fprintf(stderr, "program must be started in sudo mode.\n");
+        return EXIT_FAILURE;
+    }
+
     set_default_opts_val(&g_data.opts);
     if (!parse_arg(ac, av, &g_data) || !reverse_all_dns(&g_data))
         return EXIT_FAILURE;
     
     (void)nmap(&g_data);
 
-    free_str_arr(g_data.opts.addr_in);
-    free_str_arr(g_data.opts.addr);
+    clean_all(&g_data);
     return EXIT_SUCCESS;
 }

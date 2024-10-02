@@ -39,10 +39,8 @@ bool process_nmap_scans(t_global_data *data)
                 data->opts.addr[addr_index]);
 
         i32 tcp_sockfd = 0, udp_sockfd = 0;
-        if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd)) {
-            __log_error("socket error");
+        if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
             clean_all_and_exit(data, tcp_sockfd, udp_sockfd);
-        }
 
         sockaddr_in dest;
         memset(&dest, 0, sizeof(sockaddr_in));

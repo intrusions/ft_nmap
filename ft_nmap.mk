@@ -42,7 +42,7 @@ SRCS :=                                \
     core/utils/free_str_arr.c          \
     core/utils/is_odd.c                \
     core/utils/checksum.c              \
-    core/utils/clean_all_and_exit.c    \
-    lib/ngnl/get_next_line.c            \
-    lib/ngnl/get_next_line_utils.c      \
+    core/utils/clean_all.c             \
+    lib/ngnl/get_next_line.c           \
+    lib/ngnl/get_next_line_utils.c     \
     debug/print_options.c

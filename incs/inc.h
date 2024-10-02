@@ -196,7 +196,13 @@ bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port);
 
 
 /*
-* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open.
+* free `addr` and `addr_in`.
+*/
+void clean_all(t_global_data *data);
+
+
+/*
+* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open, and exit(EXIT_FAILURE).
 */
 void clean_all_and_exit(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
 

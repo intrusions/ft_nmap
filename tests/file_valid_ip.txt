@@ -1,3 +1,7 @@
 8.8.8.8
 www.google.com
 www.github.com
+spotify.com
+facebook.com
+www.tiktok.com
+scanme.nmap.org
