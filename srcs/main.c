@@ -1,8 +1,5 @@
 #include "inc.h"
 
-#include <time.h>
-#include <stdio.h>
-
 bool nmap(t_global_data *data)
 {
     print_nmap_infos(data->opts);

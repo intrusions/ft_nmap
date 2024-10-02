@@ -38,10 +38,10 @@ bool process_nmap_scans(t_global_data *data)
                 data->opts.addr_in[addr_index],
                 data->opts.addr[addr_index]);
 
-        i32 tcp_sockfd, udp_sockfd;
+        i32 tcp_sockfd = 0, udp_sockfd = 0;
         if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd)) {
             __log_error("socket error");
-            clean_all_and_exit(data, 0);
+            clean_all_and_exit(data, tcp_sockfd, udp_sockfd);
         }
 
         sockaddr_in dest;
@@ -60,7 +60,7 @@ bool process_nmap_scans(t_global_data *data)
                     sockfd = tcp_sockfd;
 
                 if (!process_scan_type(data, sockfd, &dest, scan_types[i]))
-                    clean_all_and_exit(data, tcp_sockfd);
+                    clean_all_and_exit(data, tcp_sockfd, udp_sockfd);
             }
         }
 

@@ -10,22 +10,21 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netinet/udp.h>
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
 #include <errno.h>
 #include <time.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <netinet/udp.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 
 #include <pcap.h>
-
-#include <arpa/inet.h>
 
 
 // ========================================================================= //
@@ -103,10 +102,6 @@ typedef struct {
 } t_udp_packet;
 
 typedef struct {
-    // i32 sockfd;
-    // u16 pid;
-
-    // sockaddr_in dest;
     t_options opts;
 } t_global_data;
 
@@ -163,7 +158,6 @@ bool parse_debug_from_arg(char *debug, t_options *opts);
 void set_default_opts_val(t_options *opts);
 
 
-
 /*
 * reverse the dns for all `addr_in` in t_options struct 
 * and fill `addr` with response.
@@ -202,9 +196,9 @@ bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port);
 
 
 /*
-* free `addr`, `addr_in` and `sockfd` if it open.
+* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open.
 */
-void clean_all_and_exit(t_global_data *data, i32 sockfd);
+void clean_all_and_exit(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
 
 
 /*
