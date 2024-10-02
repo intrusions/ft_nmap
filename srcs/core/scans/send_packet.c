@@ -10,11 +10,12 @@ bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type)
     packet.hdr.doff = 5;
     packet.hdr.window = htons(5840);
 
-    packet.hdr.syn = scan_type == SCAN_TYPE_SYN;
-    packet.hdr.fin = (scan_type == SCAN_TYPE_FIN || scan_type == SCAN_TYPE_XMAS);
-    packet.hdr.urg = scan_type == SCAN_TYPE_XMAS;
-    packet.hdr.psh = scan_type == SCAN_TYPE_XMAS;
-    packet.hdr.ack = scan_type == SCAN_TYPE_ACK;
+    packet.hdr.syn = (scan_type == SCAN_TYPE_SYN);
+    packet.hdr.fin = (scan_type == SCAN_TYPE_FIN
+                        || scan_type == SCAN_TYPE_XMAS);
+    packet.hdr.urg = (scan_type == SCAN_TYPE_XMAS);
+    packet.hdr.psh = (scan_type == SCAN_TYPE_XMAS);
+    packet.hdr.ack = (scan_type == SCAN_TYPE_ACK);
 
 
     if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {

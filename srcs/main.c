@@ -3,7 +3,6 @@
 bool nmap(t_global_data *data)
 {
     print_nmap_infos(data->opts);
-    fprintf(stdout, "[SCANNING]\n");
 
     timespec start_time;
     clock_gettime(CLOCK_MONOTONIC, &start_time);

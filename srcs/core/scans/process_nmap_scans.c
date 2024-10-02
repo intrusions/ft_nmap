@@ -12,10 +12,6 @@ static bool process_scan_type(t_global_data *data, i32 sockfd, sockaddr_in *dest
             if (!send_tcp_packet(sockfd, dest, port, scan_type))
                 return false;
         }
-
-        // TODO
-        // if (!recv_tcp_packet())
-        //     return false;
     }
     
     return true;
@@ -32,6 +28,7 @@ bool process_nmap_scans(t_global_data *data)
         SCAN_TYPE_UDP,
     };
 
+    fprintf(stdout, "[SCANNING]\n");
 
     for (u8 addr_index = 0; data->opts.addr[addr_index]; addr_index++) {
         fprintf(stdout, "[*] %s (%s) scan :\n",

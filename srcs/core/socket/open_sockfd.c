@@ -30,5 +30,6 @@ bool open_udp_sockfd(i32 *sockfd)
         __log_error("setsockopt error");
         return false;
     }
+    
     return true;
 }
