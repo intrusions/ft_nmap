@@ -29,6 +29,16 @@ static t_services_node *create_binary_tree_from_services_arr(char **services_arr
         return NULL;
 
     i16 mid = (start + end) / 2;
+    
+    if (services_arr[mid][0] == '#') {
+        t_services_node *left = create_binary_tree_from_services_arr(services_arr, start, mid - 1);
+        t_services_node *right = create_binary_tree_from_services_arr(services_arr, mid + 1, end);
+        
+        if (left)
+            return left;
+        else
+            return right;
+    }
 
     t_services_node *node = create_node_from_line(services_arr[mid]);
     if (!node)
