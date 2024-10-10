@@ -7,7 +7,8 @@ bool nmap(t_global_data *data)
     timespec start_time;
     clock_gettime(CLOCK_MONOTONIC, &start_time);
     
-    (void)process_nmap_scans(data);
+    if (!process_nmap_scans(data))
+        return false;
     
     timespec end_time; 
     clock_gettime(CLOCK_MONOTONIC, &end_time);
@@ -41,7 +42,10 @@ int main(int ac, char **av)
     if (!parse_arg(ac, av, &g_data) || !reverse_all_dns(&g_data))
         return EXIT_FAILURE;
     
-    (void)nmap(&g_data);
+    if (!nmap(&g_data)) {
+        fprintf(stderr, "an error occured.\n");
+        return EXIT_FAILURE;
+    }
 
     clean_all(&g_data);
     return EXIT_SUCCESS;

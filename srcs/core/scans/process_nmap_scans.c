@@ -28,6 +28,11 @@ bool process_nmap_scans(t_global_data *data)
         SCAN_TYPE_UDP,
     };
 
+    //binary tree of services possibility
+    char **services_arr = NULL;
+    if (!create_services_tree(data, services_arr))
+        return false;
+
     fprintf(stdout, "[SCANNING]\n");
 
     for (u8 addr_index = 0; data->opts.addr[addr_index]; addr_index++) {

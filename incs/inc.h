@@ -31,6 +31,11 @@
 //                                   Define                                  //
 // ========================================================================= //
 
+#define SERVICES_FILE_PATH  "./services/nmap-services"
+
+#define MAX_SIZE_SERVICE_NAME   20
+#define MAX_SIZE_PROTO_NAME     10
+
 #define SIZE_PORTS_ARRAY       1024
 
 #define MAX_PORT_VALUE         65535
@@ -70,12 +75,12 @@ typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
 
-typedef struct sockaddr_in  sockaddr_in;
-typedef struct sockaddr     sockaddr;
-typedef struct addrinfo     addrinfo;
-typedef struct tcphdr       tcphdr;
-typedef struct udphdr       udphdr;
-typedef struct timespec     timespec;
+typedef struct sockaddr_in      sockaddr_in;
+typedef struct sockaddr         sockaddr;
+typedef struct addrinfo         addrinfo;
+typedef struct tcphdr           tcphdr;
+typedef struct udphdr           udphdr;
+typedef struct timespec         timespec;
 
 
 // ========================================================================= //
@@ -93,6 +98,15 @@ typedef struct {
     bool debug_mode;
 } t_options;
 
+typedef struct t_services_node {
+    char service[MAX_SIZE_SERVICE_NAME];
+    char protocol[MAX_SIZE_PROTO_NAME];
+    u16 port;
+
+    struct t_services_node *left;
+    struct t_services_node *right;
+} t_services_node;
+
 typedef struct {
     tcphdr hdr;
 } t_tcp_packet;
@@ -102,7 +116,8 @@ typedef struct {
 } t_udp_packet;
 
 typedef struct {
-    t_options opts;
+    t_options       opts;
+    t_services_node *services;
 } t_global_data;
 
 
@@ -190,9 +205,16 @@ bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
 
 
 /*
-* send a udp packet specified per to `port`.
+* send a udp packet specified to `port`.
 */
 bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+
+
+/*
+* open `./services/nmap-services` and create a binary tree
+* containing all services possibility.
+*/
+bool create_services_tree(t_global_data *data, char **services_arr);
 
 
 /*
@@ -220,9 +242,10 @@ void print_nmap_infos(t_options opts);
 
 
 /*
-* print t_options structure value.
+* debug function.
 */
 void print_options(t_options *opts);
+void print_services_tree(t_services_node *node, int depth);
 
 
 /*
@@ -233,6 +256,12 @@ void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
 void print_dash_line();
+
+bool count_line_in_file(char *file, i16 *file_line_count);
+bool open_fd(char *file, i32 *fd);
+
+t_services_node *create_node(u16 port, char *service, char *protocol);
+t_services_node *create_node_from_line(char *line);
 
 
 #endif /* __INC_H__ */

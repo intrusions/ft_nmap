@@ -1,39 +1,6 @@
 #include "inc.h"
 #include "get_next_line.h"
 
-static bool open_fd(char *file, i32 *fd)
-{
-    *fd = open(file, O_RDONLY);
-    if (*fd == -1) {
-        __log_error("open error");
-        return false;
-    }
-    return true;
-}
-
-static bool count_line_in_file(char *file, i16 *file_line_count)
-{
-    i32 fd;
-    if (!open_fd(file, &fd))
-        return false;
-
-    char *line = get_next_line(fd);
-    if (!line) {
-        close(fd);
-        return false;
-    }
-
-    while (line) {
-        (*file_line_count)++;
-        free(line);
-
-        line = get_next_line(fd);
-    }
-
-    close(fd);
-    return true;
-}
-
 bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set)
 {
     if (*ip_is_set) {
