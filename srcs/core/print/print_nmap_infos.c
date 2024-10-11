@@ -2,7 +2,7 @@
 
 void print_nmap_infos(t_options opts)
 {
-    fprintf(stdout, "[SCAN CONFIGURATIONS]\n");
+    fprintf(stdout, "[*] [SCAN CONFIGURATIONS]\n");
 
     /* ip address */
     fprintf(stdout, "[*] Target Ip-Address :\n");

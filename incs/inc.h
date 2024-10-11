@@ -53,6 +53,10 @@
 
 #define NUM_SCAN_TYPE   6
 
+#define PORT_STATE_CLOSED   0x1 << 0
+#define PORT_STATE_OPEN     0x1 << 1
+#define PORT_STATE_FILTERED 0x1 << 2
+
 
 // ========================================================================= //
 //                                   Macro                                   //
@@ -214,7 +218,7 @@ bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port);
 * open `./services/nmap-services` and create a binary tree
 * containing all services possibility.
 */
-bool create_services_tree(t_global_data *data, char **services_arr);
+bool create_services_tree(t_global_data *data);
 
 
 /*
@@ -256,12 +260,14 @@ void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
 void print_dash_line();
+void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state);
 
 bool count_line_in_file(char *file, i16 *file_line_count);
 bool open_fd(char *file, i32 *fd);
 
-t_services_node *create_node(u16 port, char *service, char *protocol);
 t_services_node *create_node_from_line(char *line);
+t_services_node *search_node(t_services_node *root, u16 port, char *protocol);
+void free_services_tree(t_services_node *node);
 
 
 #endif /* __INC_H__ */

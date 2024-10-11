@@ -35,33 +35,9 @@ t_services_node *create_node_from_line(char *line)
     return node;
 }
 
-t_services_node *search_node(t_services_node *root, u16 port, char *protocol)
-{
-    if (!root)
-        return NULL;
-
-    if ((root->port == port) && (!strcmp(root->protocol, protocol)))
-        return root;
-
-    if (port < root->port)
-        return search_node(root->left, port, protocol);
-
-    if (port == root->port) {
-        i16 cmp = strcmp(protocol, root->protocol);
-        
-        if (cmp < 0)
-            return search_node(root->left, port, protocol);
-        else
-            return search_node(root->right, port, protocol);
-    }
-
-    return search_node(root->right, port, protocol);
-}
-
-void free_services_tree(t_services_node *node)
-{
+void free_services_tree(t_services_node *node) {
     if (!node)
-        return ;
+        return;
 
     free_services_tree(node->left);
     free_services_tree(node->right);

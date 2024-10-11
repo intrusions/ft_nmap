@@ -12,8 +12,12 @@ static bool process_scan_type(t_global_data *data, i32 sockfd, sockaddr_in *dest
             if (!send_tcp_packet(sockfd, dest, port, scan_type))
                 return false;
         }
+
+        //receive_response function, return his state (open, closed, filtered, etc)
+        // print exemple
+        u8 state = PORT_STATE_OPEN;
+        print_scan_line(data, port, scan_type, state);
     }
-    
     return true;
 }
 
@@ -28,17 +32,15 @@ bool process_nmap_scans(t_global_data *data)
         SCAN_TYPE_UDP,
     };
 
-    //binary tree of services possibility
-    char **services_arr = NULL;
-    if (!create_services_tree(data, services_arr))
+    if (!create_services_tree(data))
         return false;
 
-    fprintf(stdout, "[SCANNING]\n");
-
+    fprintf(stdout, "[*] [SCANNING]");
     for (u8 addr_index = 0; data->opts.addr[addr_index]; addr_index++) {
-        fprintf(stdout, "[*] %s (%s) scan :\n",
+        fprintf(stdout, "\n[*] %s (%s) scan :\n",
                 data->opts.addr_in[addr_index],
                 data->opts.addr[addr_index]);
+        fprintf(stdout, "PORT       STATE  SERVICE\n");
 
         i32 tcp_sockfd = 0, udp_sockfd = 0;
         if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
@@ -65,6 +67,7 @@ bool process_nmap_scans(t_global_data *data)
         }
 
         close(tcp_sockfd);
+        close(udp_sockfd);
     }
 
     return true;

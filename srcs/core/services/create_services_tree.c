@@ -29,16 +29,12 @@ static t_services_node *create_binary_tree_from_services_arr(char **services_arr
         return NULL;
 
     i16 mid = (start + end) / 2;
-    
-    if (services_arr[mid][0] == '#') {
-        t_services_node *left = create_binary_tree_from_services_arr(services_arr, start, mid - 1);
-        t_services_node *right = create_binary_tree_from_services_arr(services_arr, mid + 1, end);
-        
-        if (left)
-            return left;
-        else
-            return right;
-    }
+
+    while (services_arr[mid][0] == '#' && mid < end)
+        mid++;
+
+    if (mid > end || services_arr[mid][0] == '#')
+        return NULL;
 
     t_services_node *node = create_node_from_line(services_arr[mid]);
     if (!node)
@@ -50,9 +46,12 @@ static t_services_node *create_binary_tree_from_services_arr(char **services_arr
     return node;
 }
 
-bool create_services_tree(t_global_data *data, char **services_arr)
+
+bool create_services_tree(t_global_data *data)
 {
+    char **services_arr = NULL;
     i16 file_line_count = 0;
+
     if (!create_arr_from_services_file(&services_arr, &file_line_count))
         return false;
 
@@ -60,8 +59,7 @@ bool create_services_tree(t_global_data *data, char **services_arr)
     if (!(root = create_binary_tree_from_services_arr(services_arr, 0, file_line_count - 1)))
         return false;
 
-    // free_str_arr(services_arr);
+    free_str_arr(services_arr);
     data->services = root;
-    print_services_tree(data->services, 0);
     return true;
 }
