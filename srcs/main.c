@@ -2,26 +2,19 @@
 
 bool nmap(t_global_data *data)
 {
+    timespec start_time;
+    timespec end_time; 
+
     print_nmap_infos(data->opts);
 
-    timespec start_time;
     clock_gettime(CLOCK_MONOTONIC, &start_time);
-    
     if (!process_nmap_scans(data))
         return false;
-    
-    timespec end_time; 
     clock_gettime(CLOCK_MONOTONIC, &end_time);
 
-    double time_spent;
-    time_spent = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
-
-    print_dash_line();
-    fprintf(stdout, "Scan took %.5f secs\n", time_spent);
-
+    print_nmap_resume(start_time, end_time);
     return true;
 }
-
 
 int main(int ac, char **av)
 {

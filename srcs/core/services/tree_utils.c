@@ -47,9 +47,8 @@ t_services_node *search_node(t_services_node *root, u16 port, char *protocol)
         return search_node(root->left, port, protocol);
 
     if (port == root->port) {
-        i16 cmp = strcmp(protocol, root->protocol);
         
-        if (cmp < 0)
+        if (strcmp(protocol, root->protocol) < 0)
             return search_node(root->left, port, protocol);
         else
             return search_node(root->right, port, protocol);

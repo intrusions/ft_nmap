@@ -13,8 +13,7 @@ static bool process_scan_type(t_global_data *data, i32 sockfd, sockaddr_in *dest
                 return false;
         }
 
-        //receive_response function, return his state (open, closed, filtered, etc)
-        // print exemple
+        // receive_response function, return his state (open, closed, filtered, etc)
         u8 state = PORT_STATE_OPEN;
         print_scan_line(data, port, scan_type, state);
     }
@@ -40,7 +39,7 @@ bool process_nmap_scans(t_global_data *data)
         fprintf(stdout, "\n[*] %s (%s) scan :\n",
                 data->opts.addr_in[addr_index],
                 data->opts.addr[addr_index]);
-        fprintf(stdout, "PORT       STATE  SERVICE\n");
+        fprintf(stdout, "PORT       STATE    SERVICE\n");
 
         i32 tcp_sockfd = 0, udp_sockfd = 0;
         if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
@@ -54,13 +53,10 @@ bool process_nmap_scans(t_global_data *data)
         for (u8 i = 0; i < NUM_SCAN_TYPE; i++) {
             
             if (data->opts.scan_type & scan_types[i]) {
-               
-                i32 sockfd;
-                if (scan_types[i] == SCAN_TYPE_UDP)
-                    sockfd = udp_sockfd;
-                else
-                    sockfd = tcp_sockfd;
-
+                i32 sockfd = scan_types[i] == SCAN_TYPE_UDP 
+                    ? udp_sockfd 
+                    : tcp_sockfd;
+                
                 if (!process_scan_type(data, sockfd, &dest, scan_types[i]))
                     clean_all_and_exit(data, tcp_sockfd, udp_sockfd);
             }

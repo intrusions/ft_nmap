@@ -136,49 +136,49 @@ bool parse_arg(i32 ac, char **av, t_global_data *data);
 
 
 /*
-* dedicated function about ports argument parsing.
+* dedicated function about `--ports` argument parsing.
 */
 bool parse_ports_from_arg(char *arg, t_options *opts);
 
 
 /*
-* dedicated function about ip argument parsing.
+* dedicated function about `--ip` argument parsing.
 */
 bool parse_ip_from_arg(char *ip, t_global_data *data, bool *ip_is_set);
 
 
 /*
-* dedicated function about file argument parsing.
+* dedicated function about `--file` argument parsing.
 */
 bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set);
 
 
 /*
-* dedicated function about speedup argument parsing.
+* dedicated function about `--speedup` argument parsing.
 */
 bool parse_speedup_from_arg(char *speedup, t_options *opts);
 
 
 /*
-* dedicated function about speedup argument parsing.
+* dedicated function about `--scan` argument parsing.
 */
 bool parse_scan_from_arg(char *scan, t_options *opts);
 
 
 /*
-* dedicated function about debug argument parsing.
+* dedicated function about `--debug` argument parsing.
 */
 bool parse_debug_from_arg(char *debug, t_options *opts);
 
 
 /*
-* function to set the default value of t_options stuct.
+* function to set the default value of `t_options` stuct.
 */
 void set_default_opts_val(t_options *opts);
 
 
 /*
-* reverse the dns for all `addr_in` in t_options struct 
+* reverse the dns for all `addr_in` in `t_options` struct 
 * and fill `addr` with response.
 */
 bool reverse_all_dns(t_global_data *data);
@@ -209,14 +209,14 @@ bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
 
 
 /*
-* send a udp packet specified to `port`.
+* send a udp packet to `port`.
 */
 bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port);
 
 
 /*
 * open `./services/nmap-services` and create a binary tree
-* containing all services possibility.
+* containing all services possibility (one per node).
 */
 bool create_services_tree(t_global_data *data);
 
@@ -228,7 +228,8 @@ void clean_all(t_global_data *data);
 
 
 /*
-* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open, and exit(EXIT_FAILURE).
+* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open,
+* free all node from services binary tree and exit(EXIT_FAILURE).
 */
 void clean_all_and_exit(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
 
@@ -246,6 +247,28 @@ void print_nmap_infos(t_options opts);
 
 
 /*
+* print last lines after the end of the scans.
+*/
+void print_nmap_resume(timespec start_time, timespec end_time);
+
+
+/*
+* print one scan line.
+* ex:
+* 15/tcp     open     netstat
+*/
+void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state);
+
+
+/*
+* service binary tree function.
+*/
+t_services_node *create_node_from_line(char *line);
+t_services_node *search_node(t_services_node *root, u16 port, char *protocol);
+void free_services_tree(t_services_node *node);
+
+
+/*
 * debug function.
 */
 void print_options(t_options *opts);
@@ -260,14 +283,9 @@ void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
 void print_dash_line();
-void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state);
 
 bool count_line_in_file(char *file, i16 *file_line_count);
 bool open_fd(char *file, i32 *fd);
-
-t_services_node *create_node_from_line(char *line);
-t_services_node *search_node(t_services_node *root, u16 port, char *protocol);
-void free_services_tree(t_services_node *node);
 
 
 #endif /* __INC_H__ */

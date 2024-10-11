@@ -24,6 +24,7 @@ CFLAGS_DBG :=                       \
 SRCS :=                                  \
     core/print/print_man.c               \
     core/print/print_nmap_infos.c        \
+    core/print/print_nmap_resume.c       \
     core/print/print_scan_line.c         \
     core/print/print_utils.c             \
     core/parsing/parse_arg.c             \

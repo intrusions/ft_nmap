@@ -23,7 +23,7 @@ static bool create_arr_from_services_file(char ***services_arr, i16 *file_line_c
     return true;
 }
 
-static t_services_node *create_binary_tree_from_services_arr(char **services_arr, i16 start, i16 end)
+static t_services_node *create_tree_from_services_arr(char **services_arr, i16 start, i16 end)
 {
     if (start > end)
         return NULL;
@@ -40,8 +40,8 @@ static t_services_node *create_binary_tree_from_services_arr(char **services_arr
     if (!node)
         return NULL;
 
-    node->left = create_binary_tree_from_services_arr(services_arr, start, mid - 1);
-    node->right = create_binary_tree_from_services_arr(services_arr, mid + 1, end);
+    node->left = create_tree_from_services_arr(services_arr, start, mid - 1);
+    node->right = create_tree_from_services_arr(services_arr, mid + 1, end);
 
     return node;
 }
@@ -55,11 +55,9 @@ bool create_services_tree(t_global_data *data)
     if (!create_arr_from_services_file(&services_arr, &file_line_count))
         return false;
 
-    t_services_node *root;
-    if (!(root = create_binary_tree_from_services_arr(services_arr, 0, file_line_count - 1)))
+    if (!(data->services = create_tree_from_services_arr(services_arr, 0, file_line_count - 1)))
         return false;
 
     free_str_arr(services_arr);
-    data->services = root;
     return true;
 }
