@@ -15,7 +15,7 @@ static char *state_to_str(u8 state)
 void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state)
 {
     if (state != PORT_STATE_OPEN)
-        return;
+        return ;
         
     char *state_str = state_to_str(state);
     char *scan_type_str = scan_type & SCAN_TYPE_UDP 
