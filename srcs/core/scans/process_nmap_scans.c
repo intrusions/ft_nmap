@@ -12,14 +12,22 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
     };
 
     for (u8 i = 0; i < NUM_SCAN_TYPE; i++) {
+        bool packed_sended = false;
 
         if ((scan_types[i] == SCAN_TYPE_UDP) && (data->opts.scan_type & SCAN_TYPE_UDP)) {
             if (!send_udp_packet(udp_sockfd, dest, port))
                 return false;
+
+            packed_sended = true;
         } else if (data->opts.scan_type & scan_types[i]){
             if (!send_tcp_packet(tcp_sockfd, dest, port, scan_types[i]))
                 return false;
+
+            packed_sended = true;
         }
+
+        if (!packed_sended)
+            continue ;
 
         // receive_response function, return his state (open, closed, filtered, etc)
         u8 state = PORT_STATE_OPEN;
@@ -31,19 +39,13 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
 
 bool process_nmap_scans(t_global_data *data)
 {
-    if (!create_services_tree(data))
-        return false;
+    i32 tcp_sockfd = 0, udp_sockfd = 0;
+    if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
+        goto error;
 
     fprintf(stdout, "[*] [SCANNING]");
     for (u8 addr_index = 0; data->opts.addr[addr_index]; addr_index++) {
-        fprintf(stdout, "\n[*] %s (%s) scan :\n",
-                data->opts.addr_in[addr_index],
-                data->opts.addr[addr_index]);
-        fprintf(stdout, "PORT       STATE    SERVICE\n");
-
-        i32 tcp_sockfd = 0, udp_sockfd = 0;
-        if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
-            clean_all_and_exit(data, tcp_sockfd, udp_sockfd);
+        print_scan_ip_header(data, addr_index);
 
         sockaddr_in dest;
         memset(&dest, 0, sizeof(sockaddr_in));
@@ -54,12 +56,16 @@ bool process_nmap_scans(t_global_data *data)
             u16 port = data->opts.ports[port_index];
 
             if (!process_port_scan(data, tcp_sockfd, udp_sockfd, &dest, port))
-                return false;
+                goto error;
         }
-
-        close(tcp_sockfd);
-        close(udp_sockfd);
+        goto success;
     }
 
+error:
+    cleanup_resources(data, tcp_sockfd, udp_sockfd);
+    return false;
+
+success:
+    cleanup_resources(data, tcp_sockfd, udp_sockfd);
     return true;
 }

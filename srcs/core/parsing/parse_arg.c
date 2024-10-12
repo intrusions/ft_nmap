@@ -37,6 +37,8 @@ static bool process_arg_parsing(char **av, i32 ac, t_global_data *data, bool *ip
 
 bool parse_arg(i32 ac, char **av, t_global_data *data)
 {
+    set_default_opts_val(&data->opts);
+
     if (!strcmp(av[0], "--help")) {
         print_man();
         exit(EXIT_SUCCESS);

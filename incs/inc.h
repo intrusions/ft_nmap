@@ -222,16 +222,10 @@ bool create_services_tree(t_global_data *data);
 
 
 /*
-* free `addr` and `addr_in`.
+* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open
+* and free all node from services binary tree.
 */
-void clean_all(t_global_data *data);
-
-
-/*
-* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open,
-* free all node from services binary tree and exit(EXIT_FAILURE).
-*/
-void clean_all_and_exit(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
+void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
 
 
 /*
@@ -261,6 +255,15 @@ void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state);
 
 
 /*
+* print ip header before ip scan.
+* ex:
+* [*] facebook.com (163.70.128.35) scan :
+* PORT       STATE    SERVICE
+*/
+void print_scan_ip_header(t_global_data *data, u8 addr_index);
+
+
+/*
 * service binary tree function.
 */
 t_services_node *create_node_from_line(char *line);
@@ -282,7 +285,9 @@ char **split(char *str, char *charset);
 void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
+bool is_sudo_mode();
 void print_dash_line();
+
 
 bool count_line_in_file(char *file, i16 *file_line_count);
 bool open_fd(char *file, i32 *fd);

@@ -26,6 +26,7 @@ SRCS :=                                  \
     core/print/print_nmap_infos.c        \
     core/print/print_nmap_resume.c       \
     core/print/print_scan_line.c         \
+    core/print/print_scan_ip_header.c    \
     core/print/print_utils.c             \
     core/parsing/parse_arg.c             \
     core/parsing/parse_ports.c           \
@@ -45,8 +46,9 @@ SRCS :=                                  \
     core/utils/str_is_digit.c            \
     core/utils/free_str_arr.c            \
     core/utils/is_odd.c                  \
+    core/utils/is_sudo_mode.c            \
     core/utils/checksum.c                \
-    core/utils/clean_all.c               \
+    core/utils/cleanup_resources.c       \
     core/utils/open_fd.c                 \
     core/utils/count_line_in_file.c      \
     lib/ngnl/get_next_line.c             \
