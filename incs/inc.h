@@ -111,6 +111,14 @@ typedef struct t_services_node {
     struct t_services_node *right;
 } t_services_node;
 
+typedef struct pseudo_header {
+    i32 source_address;
+    i32 dest_address;
+    i8 placeholder;
+    i8 protocol;
+    i16 tcp_length;
+} t_pseudo_header;
+
 typedef struct {
     tcphdr hdr;
 } t_tcp_packet;
@@ -287,6 +295,8 @@ bool str_is_digit(char *str);
 bool is_odd(i32 n);
 bool is_sudo_mode();
 void print_dash_line();
+u16 checksum(void *b, int len);
+bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet);
 
 
 bool count_line_in_file(char *file, i16 *file_line_count);
