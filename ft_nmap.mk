@@ -51,6 +51,7 @@ SRCS :=                                  \
     core/utils/cleanup_resources.c       \
     core/utils/open_fd.c                 \
     core/utils/count_line_in_file.c      \
+    core/utils/shuffle_ports.c           \
     lib/ngnl/get_next_line.c             \
     lib/ngnl/get_next_line_utils.c       \
     debug/print_options.c                \

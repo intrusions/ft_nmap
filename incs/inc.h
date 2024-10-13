@@ -294,6 +294,7 @@ void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
 bool is_sudo_mode();
+void shuffle_ports(u16 *array, u16 n);
 void print_dash_line();
 u16 checksum(void *b, int len);
 bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet);

@@ -60,6 +60,8 @@ bool parse_arg(i32 ac, char **av, t_global_data *data)
         fprintf(stderr, "you need to specify an ip.\n");
         return false;
     }
+    
+    shuffle_ports(data->opts.ports, data->opts.n_ports);
 
     if (data->opts.debug_mode)
         print_options(&data->opts);
