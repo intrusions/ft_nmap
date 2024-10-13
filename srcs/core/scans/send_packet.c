@@ -17,7 +17,6 @@ bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type)
     packet.hdr.psh = (scan_type == SCAN_TYPE_XMAS);
     packet.hdr.ack = (scan_type == SCAN_TYPE_ACK);
 
-
     if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {
         __log_error("sendto error");
         return false;        
@@ -34,7 +33,6 @@ bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port)
     packet.hdr.source = htons(SOURCE_PORT);
     packet.hdr.dest = htons(port);
     packet.hdr.len = htons(sizeof(t_udp_packet));
-
 
     if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {
         __log_error("sendto error");

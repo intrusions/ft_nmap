@@ -58,8 +58,8 @@ bool process_nmap_scans(t_global_data *data)
             if (!process_port_scan(data, tcp_sockfd, udp_sockfd, &dest, port))
                 goto error;
         }
-        goto success;
     }
+    goto success;
 
 error:
     cleanup_resources(data, tcp_sockfd, udp_sockfd);
