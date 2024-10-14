@@ -53,9 +53,11 @@
 
 #define NUM_SCAN_TYPE   6
 
-#define PORT_STATE_CLOSED   0x1 << 0
-#define PORT_STATE_OPEN     0x1 << 1
-#define PORT_STATE_FILTERED 0x1 << 2
+#define PORT_STATE_CLOSED           0x1 << 0
+#define PORT_STATE_OPEN             0x1 << 1
+#define PORT_STATE_FILTERED         0x1 << 2
+#define PORT_STATE_OPEN_FILTERED    0x1 << 3
+#define PORT_STATE_CLOSED_FILTERED  0x1 << 4
 
 
 // ========================================================================= //
@@ -128,6 +130,8 @@ typedef struct {
 } t_udp_packet;
 
 typedef struct {
+    char src_ip[INET_ADDRSTRLEN];
+
     t_options       opts;
     t_services_node *services;
 } t_global_data;
@@ -213,7 +217,7 @@ bool process_nmap_scans(t_global_data *data);
 /*
 * send a tcp packet specified per `scan_type`, to `port`.
 */
-bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
+bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u8 scan_type);
 
 
 /*
@@ -272,6 +276,30 @@ void print_scan_ip_header(t_global_data *data, u8 addr_index);
 
 
 /*
+* get our src ip.
+*/
+bool get_src_ip(char *src_ip);
+
+
+/*
+* calcul checksum for `check` field in `tcphdr`  (pseudo ip header + tcp header).
+*/
+bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip);
+
+
+/*
+* usleep between 1000 & 2000.
+*/
+void random_usleep();
+
+
+/*
+* randomize ports array.
+*/
+void shuffle_ports(u16 *array, u16 n);
+
+
+/*
 * service binary tree function.
 */
 t_services_node *create_node_from_line(char *line);
@@ -294,11 +322,8 @@ void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
 bool is_sudo_mode();
-void shuffle_ports(u16 *array, u16 n);
 void print_dash_line();
 u16 checksum(void *b, int len);
-bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet);
-void random_usleep();
 
 
 bool count_line_in_file(char *file, i16 *file_line_count);

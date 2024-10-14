@@ -31,6 +31,7 @@ int main(int ac, char **av)
             || !parse_arg(ac, av, &g_data)
             || !reverse_all_dns(&g_data)
             || !create_services_tree(&g_data)
+            || !get_src_ip(g_data.src_ip)
             || !nmap(&g_data))
         return EXIT_FAILURE;
     

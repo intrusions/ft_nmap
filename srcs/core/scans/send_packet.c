@@ -1,6 +1,6 @@
 #include "inc.h"
 
-bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type)
+bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u8 scan_type)
 {
     t_tcp_packet packet;
     memset(&packet, 0, sizeof(t_tcp_packet));
@@ -17,7 +17,7 @@ bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type)
     packet.hdr.psh = (scan_type == SCAN_TYPE_XMAS);
     packet.hdr.ack = (scan_type == SCAN_TYPE_ACK);
 
-    if (!tcp_checksum(dest, &packet))
+    if (!tcp_checksum(dest, &packet, src_ip))
         return false;
 
     if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {

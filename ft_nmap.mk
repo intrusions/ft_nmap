@@ -11,6 +11,7 @@ CFLAGS :=                           \
     -Werror                         \
     -pedantic                       \
     -lpthread                       \
+    -lpcap                          \
 
 CFLAGS_DBG :=                       \
     -g3                             \
@@ -41,6 +42,7 @@ SRCS :=                                  \
     core/scans/process_nmap_scans.c      \
     core/scans/send_packet.c             \
     core/network/reverse_dns.c           \
+    core/network/get_src_ip.c            \
     core/socket/open_sockfd.c            \
     core/utils/ft_split.c                \
     core/utils/str_is_digit.c            \

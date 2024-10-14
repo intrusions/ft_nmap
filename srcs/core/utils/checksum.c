@@ -21,11 +21,11 @@ u16 checksum(void *b, int len)
     return result;
 }
 
-bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet)
+bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip)
 {
     t_pseudo_header psh;
-    
-    psh.source_address = inet_addr("192.168.0.24");
+
+    psh.source_address = inet_addr(src_ip);
     psh.dest_address = dest->sin_addr.s_addr;
     psh.placeholder = 0;
     psh.protocol = IPPROTO_TCP;

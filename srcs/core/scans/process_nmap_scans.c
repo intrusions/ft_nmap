@@ -20,7 +20,7 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
 
             packed_sended = true;
         } else if (data->opts.scan_type & scan_types[i]){
-            if (!send_tcp_packet(tcp_sockfd, dest, port, scan_types[i]))
+            if (!send_tcp_packet(tcp_sockfd, dest, port, data->src_ip, scan_types[i]))
                 return false;
 
             packed_sended = true;
@@ -32,7 +32,7 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
         random_usleep();
         
         // receive_response function, return his state (open, closed, filtered, etc)
-        u8 state = PORT_STATE_OPEN;
+        u8 state = PORT_STATE_CLOSED_FILTERED;
         print_scan_line(data, port, scan_types[i], state);
     }
     

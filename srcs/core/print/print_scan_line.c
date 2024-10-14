@@ -8,14 +8,18 @@ static char *state_to_str(u8 state)
         return "filtered";
     else if (state == PORT_STATE_OPEN)
         return "open";
+    else if (state == PORT_STATE_OPEN_FILTERED)
+        return "open|filtered";
+    else if (state == PORT_STATE_CLOSED_FILTERED)
+        return "closed|filtered";
     else
         return NULL;
 }
 
 void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state)
 {
-    if (state != PORT_STATE_OPEN)
-        return ;
+    // if (state != PORT_STATE_OPEN)
+    //     return ;
         
     char *state_str = state_to_str(state);
     char *scan_type_str = scan_type & SCAN_TYPE_UDP 
@@ -26,7 +30,7 @@ void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state)
     char port_proto[11];
     snprintf(port_proto, sizeof(port_proto), "%d/%s", port, scan_type_str);
 
-    fprintf(stdout, "%-10s %-8s %s\n",
+    fprintf(stdout, "%-10s %-15s  %s\n",
         port_proto,
         state_str,
         node ? node->service : "unknown"
