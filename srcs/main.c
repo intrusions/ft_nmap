@@ -5,7 +5,7 @@ bool nmap(t_global_data *data)
     timespec start_time;
     timespec end_time; 
 
-    print_nmap_infos(data->opts);
+    print_nmap_infos(data);
     clock_gettime(CLOCK_MONOTONIC, &start_time);
     
     if (!process_nmap_scans(data))

@@ -29,11 +29,11 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
         if (!packed_sended)
             continue ;
 
-        random_usleep();
         
         // receive_response function, return his state (open, closed, filtered, etc)
-        u8 state = PORT_STATE_CLOSED_FILTERED;
+        u8 state = PORT_STATE_OPEN;
         print_scan_line(data, port, scan_types[i], state);
+        random_usleep();
     }
     
     return true;

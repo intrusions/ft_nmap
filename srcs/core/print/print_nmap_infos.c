@@ -1,36 +1,41 @@
 #include "inc.h"
 
-void print_nmap_infos(t_options opts)
+void print_nmap_infos(t_global_data *data)
 {
     fprintf(stdout, "[*] [SCAN CONFIGURATIONS]\n");
 
     /* ip address */
     fprintf(stdout, "[*] Target Ip-Address :\n");
-    for (u8 i = 0; opts.addr_in[i]; i++)
-        fprintf(stdout, "       - %s\n", opts.addr_in[i]);
+    for (u8 i = 0; data->opts.addr_in[i]; i++)
+        fprintf(stdout, "       - %s\n", data->opts.addr_in[i]);
     fprintf(stdout, "\n");
 
 
     /* ports */
-    fprintf(stdout, "[*] No of Ports to scan  : %d\n", opts.n_ports);
+    fprintf(stdout, "[*] No of Ports to scan  : %d\n", data->opts.n_ports);
     
     /* scans */
     fprintf(stdout, "[*] Scan to be performed : ");
-    if (opts.scan_type & SCAN_TYPE_SYN)
+    if (data->opts.scan_type & SCAN_TYPE_SYN)
         fprintf(stdout, "SYN ");
-    if (opts.scan_type & SCAN_TYPE_NULL)
+    if (data->opts.scan_type & SCAN_TYPE_NULL)
         fprintf(stdout, "NULL ");
-    if (opts.scan_type & SCAN_TYPE_ACK)
+    if (data->opts.scan_type & SCAN_TYPE_ACK)
         fprintf(stdout, "ACK ");
-    if (opts.scan_type & SCAN_TYPE_FIN)
+    if (data->opts.scan_type & SCAN_TYPE_FIN)
         fprintf(stdout, "FIN ");
-    if (opts.scan_type & SCAN_TYPE_XMAS)
+    if (data->opts.scan_type & SCAN_TYPE_XMAS)
         fprintf(stdout, "XMAS ");
-    if (opts.scan_type & SCAN_TYPE_UDP)
+    if (data->opts.scan_type & SCAN_TYPE_UDP)
         fprintf(stdout, "UDP ");
     fprintf(stdout, "\n");
 
     /* threads */
-    fprintf(stdout, "[*] No of threads        : %d\n", opts.speedup);
+    fprintf(stdout, "[*] No of threads        : %d\n", data->opts.speedup);
+    
+    /* self info */
+    fprintf(stdout, "[*] Source Ip-Address    : %s\n", data->src_ip);
+    fprintf(stdout, "[*] Source Port          : %d\n", SOURCE_PORT);
+    
     print_dash_line();
 }

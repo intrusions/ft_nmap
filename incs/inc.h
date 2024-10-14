@@ -249,7 +249,7 @@ void print_man(void);
 /*
 * print first lines resume before the scan launch.
 */
-void print_nmap_infos(t_options opts);
+void print_nmap_infos(t_global_data *data);
 
 
 /*
