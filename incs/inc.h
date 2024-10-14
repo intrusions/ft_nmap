@@ -298,6 +298,7 @@ void shuffle_ports(u16 *array, u16 n);
 void print_dash_line();
 u16 checksum(void *b, int len);
 bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet);
+void random_usleep();
 
 
 bool count_line_in_file(char *file, i16 *file_line_count);

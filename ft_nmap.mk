@@ -52,6 +52,7 @@ SRCS :=                                  \
     core/utils/open_fd.c                 \
     core/utils/count_line_in_file.c      \
     core/utils/shuffle_ports.c           \
+    core/utils/random_usleep.c           \
     lib/ngnl/get_next_line.c             \
     lib/ngnl/get_next_line_utils.c       \
     debug/print_options.c                \
