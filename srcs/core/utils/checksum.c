@@ -39,6 +39,8 @@ bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet)
     memcpy(pseudogram + sizeof(t_pseudo_header), &packet->hdr, sizeof(tcphdr));
 
     packet->hdr.check = checksum((u8 *)pseudogram, sizeof(t_pseudo_header) + sizeof(tcphdr));
+
+    free(pseudogram);
     
     return true;
 }
