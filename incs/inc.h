@@ -62,6 +62,7 @@
 #define PORT_STATE_CLOSED           0x1 << 0
 #define PORT_STATE_OPEN             0x1 << 1
 #define PORT_STATE_FILTERED         0x1 << 2
+#define PORT_STATE_UNFILTERED         0x1 << 2
 #define PORT_STATE_OPEN_FILTERED    0x1 << 3
 #define PORT_STATE_CLOSED_FILTERED  0x1 << 4
 

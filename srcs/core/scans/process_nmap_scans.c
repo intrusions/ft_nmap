@@ -124,7 +124,7 @@ static u8 get_port_state(u32 scan_type, u8 response)
 
     if (scan_type == SCAN_TYPE_ACK)
     {
-        if (response == TCP_RST_PCKT) return PORT_STATE_CLOSED;
+        if (response == TCP_RST_PCKT) return PORT_STATE_UNFILTERED;
         return PORT_STATE_FILTERED;
     }
 
