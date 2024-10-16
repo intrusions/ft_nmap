@@ -78,7 +78,7 @@ bool recv_packet(pcap_t *handle, u8 *response_state)
     }
     
     if (FD_ISSET(pcap_fd, &readfds)) {
-        if (pcap_dispatch(handle, 1, recv_packet_handler, (u8 *)response_state) < 0) {
+        if (pcap_dispatch(handle, 1, recv_packet_handler, (u8 *)response_state) == PCAP_ERROR) {
             fprintf(stderr, "Error dispatching packet: %s\n", pcap_geterr(handle));
             return false;
         }
