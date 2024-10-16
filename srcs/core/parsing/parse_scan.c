@@ -15,14 +15,14 @@ static u32 what_type_scan(char *scan_str)
     else if (!strcmp(scan_str, "UDP"))
         return SCAN_TYPE_UDP;
     else
-        return SCAN_TYPE_UNKNOW;
+        return SCAN_TYPE_UNKNOWN;
 }
 
 static bool process_scan_string(char *scan_str, t_options *opts)
 {
     u32 scan_type_bit = what_type_scan(scan_str);
     
-    if (scan_type_bit == SCAN_TYPE_UNKNOW) {
+    if (scan_type_bit == SCAN_TYPE_UNKNOWN) {
         fprintf(stderr, "%s scan is not valid.\n", scan_str);
         return false;
     }

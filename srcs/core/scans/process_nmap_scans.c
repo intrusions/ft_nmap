@@ -113,8 +113,6 @@ static void _pcap_init(pcap_t **handle)
 
 static u8 get_port_state(u32 scan_type, u8 response)
 {
-    printf("------------ scan type - [%d]\n", scan_type);
-
     if (scan_type == SCAN_TYPE_SYN)
     {
         if (response == NO_RESPONSE) return PORT_STATE_FILTERED;
@@ -143,7 +141,7 @@ static u8 get_port_state(u32 scan_type, u8 response)
         return PORT_STATE_FILTERED;
     }
 
-    return SCAN_TYPE_UNKNOW;
+    return SCAN_TYPE_UNKNOWN;
 }
 
 static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd, sockaddr_in *dest, i16 port, pcap_t *handle)
@@ -177,6 +175,7 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
 
         u8 scan_response;
         recv_and_save_serv_response(handle, &scan_response);
+        
         u8 port_state = get_port_state(scan_types[i], scan_response);
         print_scan_line(data, port, scan_types[i], port_state);
         random_usleep();

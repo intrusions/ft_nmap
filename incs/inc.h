@@ -51,7 +51,7 @@
 #define SCAN_TYPE_FIN       0x1 << 3
 #define SCAN_TYPE_XMAS      0x1 << 4
 #define SCAN_TYPE_UDP       0x1 << 5
-#define SCAN_TYPE_UNKNOW    0x1 << 6
+#define SCAN_TYPE_UNKNOWN   0x1 << 6
 
 #define NUM_SCAN_TYPE   6
 
@@ -62,9 +62,9 @@
 #define PORT_STATE_CLOSED           0x1 << 0
 #define PORT_STATE_OPEN             0x1 << 1
 #define PORT_STATE_FILTERED         0x1 << 2
-#define PORT_STATE_UNFILTERED         0x1 << 2
-#define PORT_STATE_OPEN_FILTERED    0x1 << 3
-#define PORT_STATE_CLOSED_FILTERED  0x1 << 4
+#define PORT_STATE_UNFILTERED       0x1 << 3
+#define PORT_STATE_OPEN_FILTERED    0x1 << 4
+#define PORT_STATE_CLOSED_FILTERED  0x1 << 5
 
 #define NO_RESPONSE         0x1 << 0
 #define ICMP_PCKT_T3_C3     0x1 << 1
