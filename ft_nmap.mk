@@ -37,6 +37,7 @@ SRCS :=                                  \
     core/parsing/parse_speedup.c         \
     core/parsing/parse_scan.c            \
     core/parsing/parse_debug.c           \
+    core/parsing/parse_show_all.c        \
     core/parsing/set_default_opts.c      \
     core/services/create_services_tree.c \
     core/services/tree_utils.c           \

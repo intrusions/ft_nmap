@@ -36,7 +36,7 @@ static char *scan_to_str(u8 scan)
 
 void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 port_state)
 {
-    if (port_state != PORT_STATE_OPEN)
+    if (!data->opts.show_all && port_state != PORT_STATE_OPEN)
         return ;
     
     char *state_str = state_to_str(port_state);

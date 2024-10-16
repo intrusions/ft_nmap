@@ -117,6 +117,7 @@ typedef struct {
     u16 n_ports;
     u32 scan_type;
     bool debug_mode;
+    bool show_all;
 } t_options;
 
 typedef struct t_services_node {
@@ -340,6 +341,7 @@ void print_dash_line();
 u16 checksum(void *b, int len);
 bool pcap_initialization(pcap_t **handle);
 bool recv_packet(pcap_t *handle, u8 *response_state);
+bool parse_show_all_from_arg(char *show_all, t_options *opts);
 
 
 bool count_line_in_file(char *file, i16 *file_line_count);
