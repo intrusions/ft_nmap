@@ -1,5 +1,41 @@
 #include "inc.h"
 
+static bool pcap_initialization(pcap_t **handle)
+{
+    char *devs;
+    char err_buf[PCAP_ERRBUF_SIZE];
+
+    devs = pcap_lookupdev(err_buf);
+    if (!devs) {
+        fprintf(stderr, "pcap_lookupdev error: %s\n", err_buf);
+        return false;
+    }
+
+    *handle = pcap_open_live(devs, BUFSIZ, 1, 200, err_buf);
+    if (!*handle) {
+        fprintf(stderr, "pcap_open_live error: %s\n", err_buf);
+        return false;
+    }
+
+    struct bpf_program filter;
+    char filter_str[] = "(tcp[tcpflags] & tcp-rst != 0) \
+        or (tcp[tcpflags] & (tcp-syn | tcp-ack) == (tcp-syn | tcp-ack)) \
+        or icmp";
+    if (pcap_compile(*handle, &filter, filter_str, 0, PCAP_NETMASK_UNKNOWN) == -1) {
+        fprintf(stderr, "pcap_compile error: %s\n", pcap_geterr(*handle));
+        pcap_close(*handle);
+        return false;
+    }
+
+    if (pcap_setfilter(*handle, &filter) == -1) {
+        fprintf(stderr, "pcap_setfilter error: %s\n", pcap_geterr(*handle));
+        pcap_close(*handle);
+        return false;
+    }
+
+    return true;
+}
+
 static void serv_response_handler(u_char *state, const struct pcap_pkthdr *header, const u_char *packet)
 {
     (void)header;
@@ -16,7 +52,7 @@ static void serv_response_handler(u_char *state, const struct pcap_pkthdr *heade
     ip_header = packet + ethernet_header_length;
     ip_header_length = ((*ip_header) & 0x0F) * 4;
 
-	if (*(ip_header + 9) == IPPROTO_TCP) {
+    if (*(ip_header + 9) == IPPROTO_TCP) {
 
         tcp_header = packet + ethernet_header_length + ip_header_length;
         tcp_header_length = ((*(tcp_header + 12)) & 0xF0) >> 4;
@@ -25,21 +61,21 @@ static void serv_response_handler(u_char *state, const struct pcap_pkthdr *heade
         struct tcphdr *tcp_hdr = (struct tcphdr *)tcp_header;
         unsigned char flags = tcp_hdr->th_flags;
 
-		if (flags & TCP_RST_FLAG) {
+        if (flags & TCP_RST_FLAG) {
             *response_state = TCP_RST_PCKT;
             return ;
-		} 
-		if ((flags & TCP_SYN_FLAG) && (flags & TCP_ACK_FLAG)) {
+        } 
+        if ((flags & TCP_SYN_FLAG) && (flags & TCP_ACK_FLAG)) {
             *response_state = TCP_SYN_ACK_PCKT;
             return ;
-		}
+        }
     }
     else if (*(ip_header + 9) == IPPROTO_ICMP) {
 
         icmp_header = packet + ethernet_header_length + ip_header_length;
         struct icmphdr *icmp_hdr = (struct icmphdr *)icmp_header;
 
-		// destination unreachable && port unreachable
+        // destination unreachable && port unreachable
         if (icmp_hdr->type == 3 && icmp_hdr->code == 3) {
             *response_state = ICMP_PCKT_T3_C3;
             return ; 
@@ -52,96 +88,69 @@ static void serv_response_handler(u_char *state, const struct pcap_pkthdr *heade
     *response_state = NO_RESPONSE;
 }
 
-static void recv_and_save_serv_response(pcap_t *handle, u8 *response_state)
-{
-	struct timeval tv = {0, 250000};
-
-	fd_set readfds;
-	FD_ZERO(&readfds);
-	int pcap_fd = pcap_fileno(handle);
-	FD_SET(pcap_fd, &readfds);
-
-	int retval = select(pcap_fd + 1, &readfds, NULL, NULL, &tv);
-
-	if (retval == -1) {
-		perror("select error");
-		exit(EXIT_FAILURE);
-	} else if (retval == 0)
-		return;
-	else if (FD_ISSET(pcap_fd, &readfds))
-		pcap_dispatch(handle, 1, serv_response_handler, (u_char *)response_state);
-}
-
-static void _pcap_init(pcap_t **handle)
-{
-	char	*devs;
-	char	err_buf[PCAP_ERRBUF_SIZE];
-	struct	bpf_program filter;
-	// char	filter_str[] = "tcp";
-	char filter_str[] = "(tcp[tcpflags] & tcp-rst != 0) or (tcp[tcpflags] & (tcp-syn | tcp-ack) == (tcp-syn | tcp-ack)) or icmp";
-
-	devs = pcap_lookupdev(err_buf);
-	if (!devs) {
-		fprintf(stderr, "error finding device");
-		// TODO: - Free and exit
-		exit(EXIT_FAILURE);
-	}
-
-	*handle =  pcap_open_live(devs, BUFSIZ, 1, 200, err_buf);
-	if (!*handle)
-	{
-		fprintf(stderr, "couldn t open device\n");
-		// TODO: - Free and exit
-		exit(EXIT_FAILURE);
-	}
-
-	if (pcap_compile(*handle, &filter, filter_str, 0, PCAP_NETMASK_UNKNOWN) == -1) {
-		fprintf(stderr, "Bad filter - %s\n", pcap_geterr(*handle));
-		// TODO: - Free and exit
-		pcap_close(*handle);
-		exit(EXIT_FAILURE);
-	}
-
-	if (pcap_setfilter(*handle, &filter) == -1) {
-		fprintf(stderr, "Error setting filter - %s\n", pcap_geterr(*handle));
-		// TODO: - Free and exit
-		pcap_close(*handle);
-		exit(EXIT_FAILURE);
-	}
-
-}
-
 static u8 get_port_state(u32 scan_type, u8 response)
 {
-    if (scan_type == SCAN_TYPE_SYN)
-    {
-        if (response == NO_RESPONSE) return PORT_STATE_FILTERED;
-        if (response == TCP_SYN_ACK_PCKT) return PORT_STATE_OPEN;
-        if (response == TCP_RST_PCKT) return PORT_STATE_CLOSED;
+    if (scan_type == SCAN_TYPE_SYN) {
+        
+        if (response == NO_RESPONSE)
+            return PORT_STATE_FILTERED;
+        if (response == TCP_SYN_ACK_PCKT)
+            return PORT_STATE_OPEN;
+        if (response == TCP_RST_PCKT)
+            return PORT_STATE_CLOSED;
     }
 
-    if (scan_type == SCAN_TYPE_ACK)
-    {
-        if (response == TCP_RST_PCKT) return PORT_STATE_UNFILTERED;
+    if (scan_type == SCAN_TYPE_ACK) {
+        
+        if (response == TCP_RST_PCKT)
+            return PORT_STATE_UNFILTERED;
         return PORT_STATE_FILTERED;
     }
 
-    if (scan_type == SCAN_TYPE_UDP)
-    {
-        if (response == NO_RESPONSE) return PORT_STATE_OPEN_FILTERED;
-        if (response == ICMP_PCKT_T3_C3) return PORT_STATE_CLOSED;
-        if (response == ICMP_PCKT_T3) return PORT_STATE_FILTERED;
+    if (scan_type == SCAN_TYPE_UDP) {
+        
+        if (response == NO_RESPONSE)
+            return PORT_STATE_OPEN_FILTERED;
+        if (response == ICMP_PCKT_T3_C3)
+            return PORT_STATE_CLOSED;
+        if (response == ICMP_PCKT_T3)
+            return PORT_STATE_FILTERED;
         return PORT_STATE_OPEN;
     }
 
-    if (scan_type == SCAN_TYPE_NULL || scan_type == SCAN_TYPE_FIN || scan_type == SCAN_TYPE_XMAS)
-    {
-        if (response == NO_RESPONSE) return PORT_STATE_OPEN_FILTERED;
-        if (response == TCP_RST_PCKT) return PORT_STATE_CLOSED;
+    if (scan_type == SCAN_TYPE_NULL || scan_type == SCAN_TYPE_FIN || scan_type == SCAN_TYPE_XMAS) {
+        if (response == NO_RESPONSE)
+            return PORT_STATE_OPEN_FILTERED;
+        if (response == TCP_RST_PCKT)
+            return PORT_STATE_CLOSED;
         return PORT_STATE_FILTERED;
     }
 
     return SCAN_TYPE_UNKNOWN;
+}
+
+static bool recv_and_save_serv_response(pcap_t *handle, u8 *response_state)
+{
+    fd_set readfds;
+    FD_ZERO(&readfds);
+    i32 pcap_fd = pcap_fileno(handle);
+    FD_SET(pcap_fd, &readfds);
+
+    struct timeval tv = {0, 250000};
+    
+    i32 retval = select(pcap_fd + 1, &readfds, NULL, NULL, &tv);
+    if (retval == -1) {
+        __log_error("socket error:");
+        return false;
+    }
+    
+    if (!retval)                        /* no response */
+        return true;
+    
+    if (FD_ISSET(pcap_fd, &readfds))    /* reponse */
+        pcap_dispatch(handle, 1, serv_response_handler, (u8 *)response_state);
+
+    return true;
 }
 
 static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd, sockaddr_in *dest, i16 port, pcap_t *handle)
@@ -174,7 +183,8 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
             continue ;
 
         u8 scan_response;
-        recv_and_save_serv_response(handle, &scan_response);
+        if (!recv_and_save_serv_response(handle, &scan_response))
+            return false;
         
         u8 port_state = get_port_state(scan_types[i], scan_response);
         print_scan_line(data, port, scan_types[i], port_state);
@@ -185,12 +195,13 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
 }
 
 bool process_nmap_scans(t_global_data *data)
-
 {
     i32 tcp_sockfd = 0, udp_sockfd = 0;
-    pcap_t *handle = NULL;
-    _pcap_init(&handle);
     if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
+        goto error;
+
+    pcap_t *handle = NULL;
+    if (!pcap_initialization(&handle))
         goto error;
 
     fprintf(stdout, "[*] [SCANNING]");
@@ -209,14 +220,13 @@ bool process_nmap_scans(t_global_data *data)
                 goto error;
         }
     }
-    pcap_close(handle);
     goto success;
 
 error:
-    cleanup_resources(data, tcp_sockfd, udp_sockfd);
+    cleanup_resources(data, tcp_sockfd, udp_sockfd, handle);
     return false;
 
 success:
-    cleanup_resources(data, tcp_sockfd, udp_sockfd);
+    cleanup_resources(data, tcp_sockfd, udp_sockfd, handle);
     return true;
 }

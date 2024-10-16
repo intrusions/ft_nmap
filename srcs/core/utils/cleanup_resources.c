@@ -1,6 +1,6 @@
 #include "inc.h"
 
-void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd)
+void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd, pcap_t *handle)
 {
     free_str_arr(data->opts.addr_in);
     free_str_arr(data->opts.addr);
@@ -11,4 +11,7 @@ void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd)
     
     if (udp_sockfd)
         close(udp_sockfd);
+
+    if (handle)
+        pcap_close(handle);
 }

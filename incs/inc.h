@@ -249,7 +249,7 @@ bool create_services_tree(t_global_data *data);
 * free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open
 * and free all node from services binary tree.
 */
-void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
+void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd, pcap_t *handle);
 
 
 /*
