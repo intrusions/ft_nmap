@@ -20,6 +20,8 @@ bool nmap(t_global_data *data)
 int main(int ac, char **av)
 {
     t_global_data g_data;
+    memset(&g_data, 0, sizeof(t_global_data));
+    
     ac--, av++;
 
     if (!ac) {
@@ -32,6 +34,7 @@ int main(int ac, char **av)
             || !reverse_all_dns(&g_data)
             || !create_services_tree(&g_data)
             || !get_src_ip(g_data.src_ip)
+            || !pcap_initialization(&g_data.handle)
             || !nmap(&g_data))
         return EXIT_FAILURE;
     

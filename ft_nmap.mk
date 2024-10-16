@@ -41,7 +41,9 @@ SRCS :=                                  \
     core/services/create_services_tree.c \
     core/services/tree_utils.c           \
     core/scans/process_nmap_scans.c      \
+    core/scans/pcap_initialization.c     \
     core/scans/send_packet.c             \
+    core/scans/recv_packet.c             \
     core/network/reverse_dns.c           \
     core/network/get_src_ip.c            \
     core/socket/open_sockfd.c            \

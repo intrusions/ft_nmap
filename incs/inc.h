@@ -100,6 +100,8 @@ typedef struct addrinfo         addrinfo;
 typedef struct tcphdr           tcphdr;
 typedef struct udphdr           udphdr;
 typedef struct timespec         timespec;
+typedef struct timeval          timeval;
+typedef struct bpf_program      bpf_program;
 
 
 // ========================================================================= //
@@ -144,6 +146,7 @@ typedef struct {
 
 typedef struct {
     char src_ip[INET_ADDRSTRLEN];
+    pcap_t *handle;
 
     t_options       opts;
     t_services_node *services;
@@ -246,11 +249,10 @@ bool create_services_tree(t_global_data *data);
 
 
 /*
-* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open
-* and free all node from services binary tree.
+* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open,
+* free all node from services binary tree and close pcap handle.
 */
-void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd, pcap_t *handle);
-
+void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
 
 /*
 * print manual of the program.
@@ -336,6 +338,8 @@ bool is_odd(i32 n);
 bool is_sudo_mode();
 void print_dash_line();
 u16 checksum(void *b, int len);
+bool pcap_initialization(pcap_t **handle);
+bool recv_packet(pcap_t *handle, u8 *response_state);
 
 
 bool count_line_in_file(char *file, i16 *file_line_count);
