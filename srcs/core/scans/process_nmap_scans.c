@@ -2,14 +2,12 @@
 
 static void serv_response_handler(u_char *state, const struct pcap_pkthdr *header, const u_char *packet)
 {
-    // (void)args;
     (void)header;
     u8 *response_state = (u8 *)state;
 
     const u_char *ip_header;
     const u_char *tcp_header;
     const u_char *icmp_header;
-
 
     int ethernet_header_length = 14;
     int ip_header_length;
@@ -21,7 +19,6 @@ static void serv_response_handler(u_char *state, const struct pcap_pkthdr *heade
 	if (*(ip_header + 9) == IPPROTO_TCP) {
 
         tcp_header = packet + ethernet_header_length + ip_header_length;
-
         tcp_header_length = ((*(tcp_header + 12)) & 0xF0) >> 4;
         tcp_header_length = tcp_header_length * 4;
 
@@ -29,12 +26,10 @@ static void serv_response_handler(u_char *state, const struct pcap_pkthdr *heade
         unsigned char flags = tcp_hdr->th_flags;
 
 		if (flags & TCP_RST_FLAG) {
-			printf("-> received [RST] packet\n");
             *response_state = TCP_RST_PCKT;
             return ;
 		} 
 		if ((flags & TCP_SYN_FLAG) && (flags & TCP_ACK_FLAG)) {
-			printf("-> received [SYN-ACK] packet\n");
             *response_state = TCP_SYN_ACK_PCKT;
             return ;
 		}
@@ -46,18 +41,18 @@ static void serv_response_handler(u_char *state, const struct pcap_pkthdr *heade
 
 		// destination unreachable && port unreachable
         if (icmp_hdr->type == 3 && icmp_hdr->code == 3) {
-            printf("-> ICMP destination unreachable\n");
-            *response_state = ICMP_PCKT;
+            *response_state = ICMP_PCKT_T3_C3;
             return ; 
         }
-     
-    }
-    *response_state = NO_RESPONSE;
-	// printf("\n");
 
+        *response_state = ICMP_PCKT_T3;
+        return ;     
+    }
+
+    *response_state = NO_RESPONSE;
 }
 
-static void recv_and_analyse_serv_response(pcap_t *handle, u8 *response_state)
+static void recv_and_save_serv_response(pcap_t *handle, u8 *response_state)
 {
 	struct timeval tv = {0, 250000};
 
@@ -71,13 +66,10 @@ static void recv_and_analyse_serv_response(pcap_t *handle, u8 *response_state)
 	if (retval == -1) {
 		perror("select error");
 		exit(EXIT_FAILURE);
-	} else if (retval == 0) {
-		printf("Nothing has been received.\n\n");
+	} else if (retval == 0)
 		return;
-	} else if (FD_ISSET(pcap_fd, &readfds)) {
-		printf("Somehting has been received:\n");
+	else if (FD_ISSET(pcap_fd, &readfds))
 		pcap_dispatch(handle, 1, serv_response_handler, (u_char *)response_state);
-	}
 }
 
 static void _pcap_init(pcap_t **handle)
@@ -119,6 +111,41 @@ static void _pcap_init(pcap_t **handle)
 
 }
 
+static u8 get_port_state(u32 scan_type, u8 response)
+{
+    printf("------------ scan type - [%d]\n", scan_type);
+
+    if (scan_type == SCAN_TYPE_SYN)
+    {
+        if (response == NO_RESPONSE) return PORT_STATE_FILTERED;
+        if (response == TCP_SYN_ACK_PCKT) return PORT_STATE_OPEN;
+        if (response == TCP_RST_PCKT) return PORT_STATE_CLOSED;
+    }
+
+    if (scan_type == SCAN_TYPE_ACK)
+    {
+        if (response == TCP_RST_PCKT) return PORT_STATE_CLOSED;
+        return PORT_STATE_FILTERED;
+    }
+
+    if (scan_type == SCAN_TYPE_UDP)
+    {
+        if (response == NO_RESPONSE) return PORT_STATE_OPEN_FILTERED;
+        if (response == ICMP_PCKT_T3_C3) return PORT_STATE_CLOSED;
+        if (response == ICMP_PCKT_T3) return PORT_STATE_FILTERED;
+        return PORT_STATE_OPEN;
+    }
+
+    if (scan_type == SCAN_TYPE_NULL || scan_type == SCAN_TYPE_FIN || scan_type == SCAN_TYPE_XMAS)
+    {
+        if (response == NO_RESPONSE) return PORT_STATE_OPEN_FILTERED;
+        if (response == TCP_RST_PCKT) return PORT_STATE_CLOSED;
+        return PORT_STATE_FILTERED;
+    }
+
+    return SCAN_TYPE_UNKNOW;
+}
+
 static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd, sockaddr_in *dest, i16 port, pcap_t *handle)
 {
     u32 scan_types[NUM_SCAN_TYPE] = {
@@ -148,10 +175,10 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
         if (!packed_sended)
             continue ;
 
-        // receive_response function, return his state (open, closed, filtered, etc)
-        u8 response_state;
-        recv_and_analyse_serv_response(handle, &response_state);
-        print_scan_line(data, port, scan_types[i], response_state);
+        u8 scan_response;
+        recv_and_save_serv_response(handle, &scan_response);
+        u8 port_state = get_port_state(scan_types[i], scan_response);
+        print_scan_line(data, port, scan_types[i], port_state);
         random_usleep();
     }
     
@@ -159,6 +186,7 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
 }
 
 bool process_nmap_scans(t_global_data *data)
+
 {
     i32 tcp_sockfd = 0, udp_sockfd = 0;
     pcap_t *handle = NULL;

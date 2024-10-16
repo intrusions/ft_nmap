@@ -65,10 +65,11 @@
 #define PORT_STATE_OPEN_FILTERED    0x1 << 3
 #define PORT_STATE_CLOSED_FILTERED  0x1 << 4
 
-#define NO_RESPONSE         0
-#define ICMP_PCKT           1
-#define TCP_RST_PCKT        2
-#define TCP_SYN_ACK_PCKT    3
+#define NO_RESPONSE         0x1 << 0
+#define ICMP_PCKT_T3_C3     0x1 << 1
+#define ICMP_PCKT_T3        0x1 << 2
+#define TCP_RST_PCKT        0x1 << 3
+#define TCP_SYN_ACK_PCKT    0x1 << 4
 
 
 // ========================================================================= //
@@ -273,7 +274,7 @@ void print_nmap_resume(timespec start_time, timespec end_time);
 * ex:
 * 15/tcp     open     netstat
 */
-void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 state);
+void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 port_state);
 
 
 /*
