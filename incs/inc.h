@@ -19,6 +19,8 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
+#include <netinet/ip_icmp.h>
+
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -53,11 +55,20 @@
 
 #define NUM_SCAN_TYPE   6
 
+#define TCP_SYN_FLAG    0x02
+#define TCP_RST_FLAG    0x04
+#define TCP_ACK_FLAG    0x10
+
 #define PORT_STATE_CLOSED           0x1 << 0
 #define PORT_STATE_OPEN             0x1 << 1
 #define PORT_STATE_FILTERED         0x1 << 2
 #define PORT_STATE_OPEN_FILTERED    0x1 << 3
 #define PORT_STATE_CLOSED_FILTERED  0x1 << 4
+
+#define NO_RESPONSE         0
+#define ICMP_PCKT           1
+#define TCP_RST_PCKT        2
+#define TCP_SYN_ACK_PCKT    3
 
 
 // ========================================================================= //
@@ -151,7 +162,6 @@ bool parse_arg(i32 ac, char **av, t_global_data *data);
 * dedicated function about `--ports` argument parsing.
 */
 bool parse_ports_from_arg(char *arg, t_options *opts);
-
 
 /*
 * dedicated function about `--ip` argument parsing.

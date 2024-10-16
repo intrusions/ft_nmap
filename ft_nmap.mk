@@ -12,6 +12,7 @@ CFLAGS :=                           \
     -pedantic                       \
     -lpthread                       \
     -lpcap                          \
+    -Wno-deprecated-declarations    \
 
 CFLAGS_DBG :=                       \
     -g3                             \
