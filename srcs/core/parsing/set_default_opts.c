@@ -11,6 +11,8 @@ void set_default_opts_val(t_options *opts)
                         | SCAN_TYPE_SYN
                         | SCAN_TYPE_UDP
                         | SCAN_TYPE_XMAS;
+    opts->show_all = false;
+    opts->shuffle_ports = true;
     
     for (u16 i = 0; i < SIZE_PORTS_ARRAY; i++)
         opts->ports[i] = i + 1;
