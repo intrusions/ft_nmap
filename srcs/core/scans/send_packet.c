@@ -1,11 +1,11 @@
 #include "inc.h"
 
-bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u8 scan_type)
+bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u16 src_port, u8 scan_type)
 {
     t_tcp_packet packet;
     memset(&packet, 0, sizeof(t_tcp_packet));
 
-    packet.hdr.source = htons(SOURCE_PORT);
+    packet.hdr.source = htons(src_port);
     packet.hdr.dest = htons(port);
     packet.hdr.doff = 5;
     packet.hdr.window = htons(1024);
@@ -28,12 +28,12 @@ bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u8 s
     return true;
 }
 
-bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port)
+bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u16 src_port)
 {
     t_udp_packet packet;
     memset(&packet, 0, sizeof(t_udp_packet));
 
-    packet.hdr.source = htons(SOURCE_PORT);
+    packet.hdr.source = htons(src_port);
     packet.hdr.dest = htons(port);
     packet.hdr.len = htons(sizeof(t_udp_packet));
     

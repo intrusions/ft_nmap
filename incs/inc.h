@@ -119,6 +119,7 @@ typedef struct {
     bool debug_mode;
     bool show_all;
     bool shuffle_ports;
+    u16 source_port;
 } t_options;
 
 typedef struct t_services_node {
@@ -234,13 +235,13 @@ bool process_nmap_scans(t_global_data *data);
 /*
 * send a tcp packet specified per `scan_type`, to `port`.
 */
-bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u8 scan_type);
+bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u16 src_port, u8 scan_type);
 
 
 /*
 * send a udp packet to `port`.
 */
-bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port);
+bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u16 src_port);
 
 
 /*
@@ -344,6 +345,7 @@ bool pcap_initialization(pcap_t **handle);
 bool recv_packet(pcap_t *handle, u8 *response_state);
 bool parse_show_all_from_arg(char *show_all, t_options *opts);
 bool parse_shuffle_ports_from_arg(char *shuffle_ports, t_options *opts);
+bool parse_source_port_from_arg(char *source_port, t_options *opts);
 
 bool count_line_in_file(char *file, i16 *file_line_count);
 bool open_fd(char *file, i32 *fd);

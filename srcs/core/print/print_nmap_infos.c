@@ -35,7 +35,7 @@ void print_nmap_infos(t_global_data *data)
     
     /* self info */
     fprintf(stdout, "[*] Source Ip-Address    : %s\n", data->src_ip);
-    fprintf(stdout, "[*] Source Port          : %d\n", SOURCE_PORT);
+    fprintf(stdout, "[*] Source Port          : %d\n", data->opts.source_port);
     
     print_dash_line();
 }

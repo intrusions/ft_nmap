@@ -34,6 +34,7 @@ SRCS :=                                  \
     core/parsing/parse_ports.c           \
     core/parsing/parse_ip.c              \
     core/parsing/parse_file.c            \
+    core/parsing/parse_source_port.c     \
     core/parsing/parse_speedup.c         \
     core/parsing/parse_scan.c            \
     core/parsing/parse_debug.c           \

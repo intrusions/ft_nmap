@@ -57,12 +57,12 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
         bool packed_sended = false;
 
         if ((scan_types[i] == SCAN_TYPE_UDP) && (data->opts.scan_type & SCAN_TYPE_UDP)) {
-            if (!send_udp_packet(udp_sockfd, dest, port))
+            if (!send_udp_packet(udp_sockfd, dest, port, data->opts.source_port))
                 return false;
 
             packed_sended = true;
         } else if (data->opts.scan_type & scan_types[i]){
-            if (!send_tcp_packet(tcp_sockfd, dest, port, data->src_ip, scan_types[i]))
+            if (!send_tcp_packet(tcp_sockfd, dest, port, data->src_ip, data->opts.source_port, scan_types[i]))
                 return false;
 
             packed_sended = true;

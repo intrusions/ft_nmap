@@ -60,7 +60,7 @@ bool recv_packet(pcap_t *handle, u8 *response_state)
     
     i32 pcap_fd = pcap_fileno(handle);
     if (pcap_fd == PCAP_ERROR) {
-        fprintf(stderr, "pcap_fileno error");
+        fprintf(stderr, "pcap_fileno error\n");
         return false;
     }
 
@@ -79,7 +79,7 @@ bool recv_packet(pcap_t *handle, u8 *response_state)
     
     if (FD_ISSET(pcap_fd, &readfds)) {
         if (pcap_dispatch(handle, 1, recv_packet_handler, (u8 *)response_state) == PCAP_ERROR) {
-            fprintf(stderr, "Error dispatching packet: %s\n", pcap_geterr(handle));
+            fprintf(stderr, "pcap_dispatch error: %s\n", pcap_geterr(handle));
             return false;
         }
     }

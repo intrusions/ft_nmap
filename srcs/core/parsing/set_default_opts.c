@@ -4,6 +4,7 @@ void set_default_opts_val(t_options *opts)
 {
     opts->speedup = 0;
     opts->n_ports = 1024;
+    opts->source_port = SOURCE_PORT;
     opts->debug_mode = false;
     opts->scan_type = SCAN_TYPE_ACK
                         | SCAN_TYPE_FIN
