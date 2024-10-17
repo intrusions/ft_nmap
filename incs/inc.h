@@ -376,6 +376,7 @@ u16 checksum(void *b, int len);
 bool pcap_initialization(pcap_t **handle);
 bool set_pcap_filter(pcap_t **handle, char *dest_addr);
 bool recv_packet(pcap_t *handle, u8 *response_state);
+bool set_pcap_filter(pcap_t **handle, char *dest_addr);
 
 bool count_line_in_file(char *file, i16 *file_line_count);
 bool open_fd(char *file, i32 *fd);
