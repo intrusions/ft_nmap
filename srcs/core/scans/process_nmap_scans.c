@@ -62,7 +62,7 @@ static bool process_port_scan(t_global_data *data, i32 tcp_sockfd, i32 udp_sockf
 
             packed_sended = true;
         } else if (data->opts.scan_type & scan_types[i]){
-            if (!send_tcp_packet(tcp_sockfd, dest, port, data->src_ip, data->opts.source_port, scan_types[i]))
+            if (!send_tcp_packet(data, tcp_sockfd, dest, port, scan_types[i]))
                 return false;
 
             packed_sended = true;

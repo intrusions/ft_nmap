@@ -21,7 +21,6 @@
 #include <netinet/udp.h>
 #include <netinet/ip_icmp.h>
 
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -116,7 +115,9 @@ typedef struct {
     u16 ports[SIZE_PORTS_ARRAY];
     u16 n_ports;
     u32 scan_type;
+
     bool debug_mode;
+    bool badsum;
     bool show_all;
     bool shuffle_ports;
     u16 source_port;
@@ -202,6 +203,30 @@ bool parse_debug_from_arg(char *debug, t_options *opts);
 
 
 /*
+* dedicated function about `--show-all` argument parsing.
+*/
+bool parse_show_all_from_arg(char *show_all, t_options *opts);
+
+
+/*
+* dedicated function about `--shuffle-ports` argument parsing.
+*/
+bool parse_shuffle_ports_from_arg(char *shuffle_ports, t_options *opts);
+
+
+/*
+* dedicated function about `--source-port` argument parsing.
+*/
+bool parse_source_port_from_arg(char *source_port, t_options *opts);
+
+
+/*
+* dedicated function about `--badsum` argument parsing.
+*/
+bool parse_badsum_from_arg(char *badsum, t_options *opts);
+
+
+/*
 * function to set the default value of `t_options` stuct.
 */
 void set_default_opts_val(t_options *opts);
@@ -235,7 +260,7 @@ bool process_nmap_scans(t_global_data *data);
 /*
 * send a tcp packet specified per `scan_type`, to `port`.
 */
-bool send_tcp_packet(i32 sockfd, sockaddr_in *dest, u16 port, char *src_ip, u16 src_port, u8 scan_type);
+bool send_tcp_packet(t_global_data *data, i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
 
 
 /*
@@ -343,9 +368,6 @@ void print_dash_line();
 u16 checksum(void *b, int len);
 bool pcap_initialization(pcap_t **handle);
 bool recv_packet(pcap_t *handle, u8 *response_state);
-bool parse_show_all_from_arg(char *show_all, t_options *opts);
-bool parse_shuffle_ports_from_arg(char *shuffle_ports, t_options *opts);
-bool parse_source_port_from_arg(char *source_port, t_options *opts);
 
 bool count_line_in_file(char *file, i16 *file_line_count);
 bool open_fd(char *file, i32 *fd);
