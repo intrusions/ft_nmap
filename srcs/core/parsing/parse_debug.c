@@ -2,10 +2,10 @@
 
 bool parse_debug_from_arg(char *debug, t_options *opts)
 {
-    if (!strcmp(debug, "1")) {
+    if (!strcmp(debug, "true")) {
         opts->debug_mode = true;
         return true;
-    } else if (!strcmp(debug, "0")) {
+    } else if (!strcmp(debug, "false")) {
         opts->debug_mode = false;
         return true;
     }
