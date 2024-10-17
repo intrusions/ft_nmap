@@ -38,12 +38,12 @@
 #define MAX_SIZE_SERVICE_NAME   20
 #define MAX_SIZE_PROTO_NAME     10
 
-#define SIZE_PORTS_ARRAY       1024
+#define SIZE_PORTS_ARRAY        1024
 
-#define MAX_PORT_VALUE         65535
-#define MAX_SPEEDUP_VALUE      250
+#define MAX_PORT_VALUE          65535
+#define MAX_SPEEDUP_VALUE       250
 
-#define SOURCE_PORT            1337
+#define DEFAULT_SOURCE_PORT     1337
 
 #define SCAN_TYPE_SYN       0x1 << 0
 #define SCAN_TYPE_NULL      0x1 << 1
