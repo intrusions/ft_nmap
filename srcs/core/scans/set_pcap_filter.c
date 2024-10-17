@@ -27,7 +27,7 @@ bool set_pcap_filter(pcap_t **handle, char *dest_addr)
         fprintf(stderr, "pcap_compile error: %s\n", pcap_geterr(*handle));
         return false;
     }
-    
+
     free(filter_str);
 
     if (pcap_setfilter(*handle, &filter) == PCAP_ERROR) {

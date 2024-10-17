@@ -36,11 +36,11 @@
 
 #define MAX_SIZE_SERVICE_NAME   20
 #define MAX_SIZE_PROTO_NAME     10
-
-#define SIZE_PORTS_ARRAY        1024
-
 #define MAX_PORT_VALUE          65535
 #define MAX_SPEEDUP_VALUE       250
+
+
+#define SIZE_PORTS_ARRAY        1024
 
 #define DEFAULT_SOURCE_PORT     1337
 
@@ -163,188 +163,261 @@ typedef struct {
 // ========================================================================= //
 
 /*
-* main function about arguments parsing.
+* Parse the command-line arguments and store them in the global data structure.
+* @param ac: argument count.
+* @param av: array of arguments.
+* @param data: pointer to the global data structure.
+* @return true if arguments were parsed successfully, false otherwise.
 */
 bool parse_arg(i32 ac, char **av, t_global_data *data);
 
-
 /*
-* dedicated function about `--ports` argument parsing.
+* Parse the `--ports` argument, converting it to a valid ports list.
+* @param arg: argument string for ports.
+* @param opts: pointer to the options structure where parsed values will be stored.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_ports_from_arg(char *arg, t_options *opts);
 
 /*
-* dedicated function about `--ip` argument parsing.
+* Parse the `--ip` argument and store the IP address in the global data structure.
+* @param ip: argument string representing the IP address.
+* @param data: pointer to the global data structure, 
+*   containing opts structure where the IP will be stored.
+* @param ip_is_set: boolean flag to track if IPs have already been set.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_ip_from_arg(char *ip, t_global_data *data, bool *ip_is_set);
 
-
 /*
-* dedicated function about `--file` argument parsing.
+* Parse the `--file` argument, loading IPs or hosts from a specified file.
+* @param file: file name or path to be parsed.
+* @param opts: pointer to the options structure.
+* @param ip_is_set: boolean flag to track if IPs have already been set.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set);
 
-
 /*
-* dedicated function about `--speedup` argument parsing.
+* Parse the `--speedup` argument, which define the number of threads for the scan.
+* @param speedup: string representing the speedup level.
+* @param opts: pointer to the options structure where the value will be stored.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_speedup_from_arg(char *speedup, t_options *opts);
 
-
 /*
-* dedicated function about `--scan` argument parsing.
+* Parse the `--scan` argument, specifying the types of scans to be performed (e.g., SYN, ACK).
+* @param scan: string representing the scan types.
+* @param opts: pointer to the options structure where scan types will be set.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_scan_from_arg(char *scan, t_options *opts);
 
-
 /*
-* dedicated function about `--debug` argument parsing.
+* Parse the `--debug` argument to enable debugging mode.
+* @param debug: string argument representing the flag (e.g. true, false).
+* @param opts: pointer to the options structure where debug mode will be toggled.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_debug_from_arg(char *debug, t_options *opts);
 
-
 /*
-* dedicated function about `--show-all` argument parsing.
+* Parse the `--show-all` argument, toggling visibility of all scan results, including filtered ports.
+* @param show_all: string argument representing the flag (e.g. true, false).
+* @param opts: pointer to the options structure where the flag will be set.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_show_all_from_arg(char *show_all, t_options *opts);
 
-
 /*
-* dedicated function about `--shuffle-ports` argument parsing.
+* Parse the `--shuffle-ports` argument to randomize the order of port scanning.
+* @param shuffle_ports: string argument representing the flag (e.g. true, false).
+* @param opts: pointer to the options structure where the flag will be set.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_shuffle_ports_from_arg(char *shuffle_ports, t_options *opts);
 
-
 /*
-* dedicated function about `--source-port` argument parsing.
+* Parse the `--source-port` argument to specify a custom source port for the scan.
+* @param source_port: string representing the source port.
+* @param opts: pointer to the options structure where the source port will be stored.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_source_port_from_arg(char *source_port, t_options *opts);
 
-
 /*
-* dedicated function about `--badsum` argument parsing.
+* Parse the `--badsum` argument to introduce packet checksum errors.
+* @param badsum: string argument representing the flag (e.g. true, false).
+* @param opts: pointer to the options structure where the flag will be set.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_badsum_from_arg(char *badsum, t_options *opts);
 
-
 /*
-* dedicated function about `--output` argument parsing.
+* Parse the `--output` argument to specify an output file for scan results.
+* @param file: string representing the output file path.
+* @param opts: pointer to the options structure where the `FILE *` will be stored.
+* @return true if parsing was successful, false otherwise.
 */
 bool parse_output_from_arg(char *file, t_options *opts);
 
-
 /*
-* function to set the default value of `t_options` stuct.
+* Set default values for the options structure `t_options`, such as scan types and ports.
+* @param opts: pointer to the options structure where default values will be set.
 */
 void set_default_opts_val(t_options *opts);
 
-
 /*
-* reverse the dns for all `addr_in` in `t_options` struct 
-* and fill `addr` with response.
+* Perform reverse DNS lookups for all IP addresses in the global data structure.
+* @param data: pointer to the global data structure containing the IP addresses.
+* @return true if reverse DNS lookups were successful, false otherwise.
 */
 bool reverse_all_dns(t_global_data *data);
 
-
 /*
-* open tcp raw socket.
+* Open a raw TCP socket for sending custom-crafted packets.
+* @param sockfd: pointer to the socket file descriptor to be initialized.
+* @return true if the socket was successfully opened, false otherwise.
 */
 bool open_tcp_sockfd(i32 *sockfd);
 
-
 /*
-* open udp raw socket.
+* Open a raw UDP socket for sending custom-crafted packets.
+* @param sockfd: pointer to the socket file descriptor to be initialized.
+* @return true if the socket was successfully opened, false otherwise.
 */
 bool open_udp_sockfd(i32 *sockfd);
 
-
 /*
-* process nmap scans.
+* Perform the nmap scan using the options and global data provided.
+* @param data: pointer to the global data structure containing scan parameters.
+* @return true if the scan was successful, false otherwise.
 */
 bool process_nmap_scans(t_global_data *data);
 
-
 /*
-* send a tcp packet specified per `scan_type`, to `port`.
+* Send a custom TCP packet to a specific port using a specified scan type (e.g., SYN, ACK).
+* @param data: pointer to the global data structure containing the scan configuration.
+* @param sockfd: the TCP socket file descriptor.
+* @param dest: pointer to the destination address structure.
+* @param port: the destination port to which the packet will be sent.
+* @param scan_type: type of scan (e.g., SYN, ACK).
+* @return true if the packet was successfully sent, false otherwise.
 */
 bool send_tcp_packet(t_global_data *data, i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
 
-
 /*
-* send a udp packet to `port`.
+* Send a custom UDP packet to a specific port.
+* @param sockfd: the UDP socket file descriptor.
+* @param dest: pointer to the destination address structure.
+* @param port: the destination port to which the packet will be sent.
+* @param src_port: the source port to be used in the packet.
+* @return true if the packet was successfully sent, false otherwise.
 */
 bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u16 src_port);
 
-
 /*
-* open `./services/nmap-services` and create a binary tree
-* containing all services possibility (one per node).
+* Load the `nmap-services` file, building a binary tree of known services for port scanning.
+* @param data: pointer to the global data structure where the tree will be stored.
+* @return true if the services tree was created successfully, false otherwise.
 */
 bool create_services_tree(t_global_data *data);
 
-
 /*
-* free `addr` and `addr_in`, close `tcp_sockfd` and `udp_sockfd` if open,
-* free all node from services binary tree and close pcap handle.
+* Clean up all allocated resources including IP addresses, sockets, pcap handle and binary trees.
+* @param data: pointer to the global data structure.
+* @param tcp_sockfd: TCP socket file descriptor to be closed.
+* @param udp_sockfd: UDP socket file descriptor to be closed.
 */
 void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
 
 /*
-* print manual of the program.
+* Display the program's manual (help page) to the user.
 */
 void print_man(void);
 
-
 /*
-* print first lines resume before the scan launch.
+* Print summary information before starting the scan.
+* @param data: pointer to the global data structure containing scan configuration.
 */
 void print_nmap_infos(t_global_data *data);
 
-
 /*
-* print last lines after the end of the scans.
+* Print a summary of the scan results after the scan has completed.
+* @param start_time: start time of the scan.
+* @param end_time: end time of the scan.
+* @param output: file pointer for writing the scan results.
 */
 void print_nmap_resume(timespec start_time, timespec end_time, FILE *output);
 
 /*
-* print one scan line.
-* ex:
-* 15/tcp     open     netstat
+* Print a single line of scan results for a given port.
+* @param data: pointer to the global data structure.
+* @param port: port number.
+* @param scan_type: type of scan used for this result.
+* @param port_state: state of the port (e.g., open, closed).
 */
 void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 port_state);
 
-
 /*
-* print ip header before ip scan.
-* ex:
-* [*] facebook.com (163.70.128.35) scan :
-* PORT       STATE    SERVICE
+* Print the header before starting a scan on a specific IP.
+* @param data: pointer to the global data structure.
+* @param addr_index: index of the IP address in `addr` being scanned.
 */
 void print_scan_ip_header(t_global_data *data, u8 addr_index);
 
-
 /*
-* get our src ip.
+* Retrieve the source IP address from the available network interfaces.
+* @param src_ip: buffer to store the source IP in string format.
+* @return true if an address was found and stored, false otherwise.
 */
 bool get_src_ip(char *src_ip);
 
-
 /*
-* calcul checksum for `check` field in `tcphdr`  (pseudo ip header + tcp header).
+* Calculate the checksum for the TCP header, including a pseudo-IP header for validation.
+* @param dest: pointer to the destination address structure.
+* @param packet: pointer to the TCP packet structure.
+* @param src_ip: source IP address to be included in the checksum calculation.
+* @return true if the checksum was calculated successfully, false otherwise.
 */
 bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip);
 
-
 /*
-* usleep between 1000 & 2000.
+* Sleep for a random interval between 1000 and 2000 microseconds.
 */
-void random_usleep();
-
+void random_usleep(void);
 
 /*
-* randomize ports array.
+* Randomize the order of ports in the provided array.
+* @param array: pointer to the array of ports.
+* @param n: number of elements in the array.
 */
 void shuffle_ports(u16 *array, u16 n);
+
+/*
+* Initialize pcap for packet capture.
+* @param handle: pointer to the pcap handle that will be initialized.
+* @return true if pcap was initialized successfully, false otherwise.
+*/
+bool pcap_initialization(pcap_t **handle);
+
+/*
+* Set a pcap filter for capturing packets related to a specific destination address 
+*   and type of scan.
+* @param handle: pointer to the pcap handle.
+* @param dest_addr: destination IP address as a string.
+* @return true if the filter was successfully set, false otherwise.
+*/
+bool set_pcap_filter(pcap_t **handle, char *dest_addr);
+
+/*
+* Receive packets and analyze their state (open, closed, filtered, etc.).
+* @param handle: pointer to the pcap handle for capturing packets.
+* @param response_state: pointer to the variable where the packet state will be stored.
+* @return true if a packet was successfully received and analyzed, false otherwise.
+*/
+bool recv_packet(pcap_t *handle, u8 *response_state);
 
 
 /*
@@ -365,7 +438,6 @@ void print_services_tree(t_services_node *node, int depth);
 /*
 * some utils.
 */
-char *str_join(char const *s1, char const *s2);
 char **split(char *str, char *charset);
 void free_str_arr(char **arr);
 bool str_is_digit(char *str);
@@ -373,10 +445,6 @@ bool is_odd(i32 n);
 bool is_sudo_mode();
 void print_dash_line(FILE *output);
 u16 checksum(void *b, int len);
-bool pcap_initialization(pcap_t **handle);
-bool set_pcap_filter(pcap_t **handle, char *dest_addr);
-bool recv_packet(pcap_t *handle, u8 *response_state);
-bool set_pcap_filter(pcap_t **handle, char *dest_addr);
 
 bool count_line_in_file(char *file, i16 *file_line_count);
 bool open_fd(char *file, i32 *fd);

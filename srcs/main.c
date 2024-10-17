@@ -7,7 +7,7 @@ bool nmap(t_global_data *data)
 
     print_nmap_infos(data);
     clock_gettime(CLOCK_MONOTONIC, &start_time);
-    
+
     if (!process_nmap_scans(data))
         return false;
     
