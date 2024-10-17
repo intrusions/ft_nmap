@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void print_dash_line()
+void print_dash_line(FILE *output)
 {
-    fprintf(stdout, "---------------------------------------------------------------------\n\n");
+    fprintf(output, "---------------------------------------------------------------------\n\n");
 }

@@ -94,7 +94,7 @@ bool process_nmap_scans(t_global_data *data)
     if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
         goto error;
 
-    fprintf(stdout, "[*] [SCANNING]");
+    fprintf(data->opts.output, "[*] [SCANNING]");
     for (u8 addr_index = 0; data->opts.addr[addr_index]; addr_index++) {
         print_scan_ip_header(data, addr_index);
 

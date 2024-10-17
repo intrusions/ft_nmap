@@ -121,6 +121,7 @@ typedef struct {
     bool show_all;
     bool shuffle_ports;
     u16 source_port;
+    FILE *output;
 } t_options;
 
 typedef struct t_services_node {
@@ -227,6 +228,12 @@ bool parse_badsum_from_arg(char *badsum, t_options *opts);
 
 
 /*
+* dedicated function about `--output` argument parsing.
+*/
+bool parse_output_from_arg(char *file, t_options *opts);
+
+
+/*
 * function to set the default value of `t_options` stuct.
 */
 void set_default_opts_val(t_options *opts);
@@ -297,8 +304,7 @@ void print_nmap_infos(t_global_data *data);
 /*
 * print last lines after the end of the scans.
 */
-void print_nmap_resume(timespec start_time, timespec end_time);
-
+void print_nmap_resume(timespec start_time, timespec end_time, FILE *output);
 
 /*
 * print one scan line.
@@ -364,7 +370,7 @@ void free_str_arr(char **arr);
 bool str_is_digit(char *str);
 bool is_odd(i32 n);
 bool is_sudo_mode();
-void print_dash_line();
+void print_dash_line(FILE *output);
 u16 checksum(void *b, int len);
 bool pcap_initialization(pcap_t **handle);
 bool recv_packet(pcap_t *handle, u8 *response_state);

@@ -12,7 +12,7 @@ bool nmap(t_global_data *data)
         return false;
     
     clock_gettime(CLOCK_MONOTONIC, &end_time);
-    print_nmap_resume(start_time, end_time);
+    print_nmap_resume(start_time, end_time, data->opts.output);
     
     return true;
 }

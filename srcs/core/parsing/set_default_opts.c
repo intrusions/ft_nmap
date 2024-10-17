@@ -14,6 +14,7 @@ void set_default_opts_val(t_options *opts)
                         | SCAN_TYPE_XMAS;
     opts->show_all = false;
     opts->shuffle_ports = true;
+    opts->output = stdout;
     
     for (u16 i = 0; i < SIZE_PORTS_ARRAY; i++)
         opts->ports[i] = i + 1;
