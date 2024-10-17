@@ -53,6 +53,7 @@ SRCS :=                                  \
     core/network/get_src_ip.c            \
     core/socket/open_sockfd.c            \
     core/utils/ft_split.c                \
+    core/utils/str_join.c                \
     core/utils/str_is_digit.c            \
     core/utils/free_str_arr.c            \
     core/utils/is_odd.c                  \

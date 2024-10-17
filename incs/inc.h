@@ -365,6 +365,7 @@ void print_services_tree(t_services_node *node, int depth);
 /*
 * some utils.
 */
+char *str_join(char const *s1, char const *s2);
 char **split(char *str, char *charset);
 void free_str_arr(char **arr);
 bool str_is_digit(char *str);
@@ -373,6 +374,7 @@ bool is_sudo_mode();
 void print_dash_line(FILE *output);
 u16 checksum(void *b, int len);
 bool pcap_initialization(pcap_t **handle);
+bool set_pcap_filter(pcap_t **handle, char *dest_addr);
 bool recv_packet(pcap_t *handle, u8 *response_state);
 
 bool count_line_in_file(char *file, i16 *file_line_count);
