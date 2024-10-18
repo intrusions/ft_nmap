@@ -1,4 +1,7 @@
-#include "inc.h"
+#include "options.h"
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
 
 bool parse_badsum_from_arg(char *badsum, t_options *opts)
 {

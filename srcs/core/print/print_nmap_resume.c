@@ -1,6 +1,7 @@
-#include "inc.h"
-
-void print_nmap_resume(timespec start_time, timespec end_time, FILE *output)
+#include "utils.h"
+#include <stdio.h>
+#include <time.h>
+void print_nmap_resume(struct timespec start_time, struct timespec end_time, FILE *output)
 {
     double time_spent;
     time_spent = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_nsec - start_time.tv_nsec) / 1e9;

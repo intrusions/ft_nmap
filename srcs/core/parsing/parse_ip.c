@@ -1,4 +1,6 @@
-#include "inc.h"
+#include "global_data.h"
+#include <stdlib.h>
+#include <string.h>
 
 bool parse_ip_from_arg(char *ip, t_global_data *data, bool *ip_is_set)
 {

@@ -1,4 +1,8 @@
-#include "inc.h"
+#include <string.h>
+#include <stdlib.h>
+#include "global_data.h"
+#include "parse.h"
+#include "utils.h"
 
 static bool is_valid_arg(char *arg)
 {
@@ -21,9 +25,9 @@ static bool is_valid_arg(char *arg)
     return true;
 }
 
-static bool process_arg_parsing(char **av, i32 ac, t_global_data *data, bool *ip_is_set)
+static bool process_arg_parsing(char **av, int32_t ac, t_global_data *data, bool *ip_is_set)
 {
-    for (i32 i = 0; i < ac; i += 2) {
+    for (int32_t i = 0; i < ac; i += 2) {
 
         if (!is_valid_arg(av[i]))
             return false;
@@ -45,7 +49,7 @@ static bool process_arg_parsing(char **av, i32 ac, t_global_data *data, bool *ip
     return true;
 }
 
-bool parse_arg(i32 ac, char **av, t_global_data *data)
+bool parse_arg(int32_t ac, char **av, t_global_data *data)
 {
     set_default_opts_val(&data->opts);
 

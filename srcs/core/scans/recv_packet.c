@@ -1,9 +1,15 @@
-#include "inc.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <errno.h>
+#include <netinet/ip_icmp.h>
+#include "network.h"
+#include "global_data.h"
+#include "scanner.h"
 
-static void recv_packet_handler(u_char *state, const struct pcap_pkthdr *header, const u_char *packet)
+static void recv_packet_handler(uint8_t *state, const struct pcap_pkthdr *header, const u_char *packet)
 {
     (void)header;
-    u8 *response_state = (u8 *)state;
+    uint8_t *response_state = (uint8_t *)state;
 
     const u_char *ip_header;
     const u_char *tcp_header;
@@ -52,13 +58,13 @@ static void recv_packet_handler(u_char *state, const struct pcap_pkthdr *header,
     *response_state = NO_RESPONSE;
 }
 
-bool recv_packet(pcap_t *handle, u8 *response_state)
+bool recv_packet(pcap_t *handle, uint8_t *response_state)
 {
-    timeval tv = {0, 250000};
+    struct timeval tv = {0, 250000};
     fd_set readfds;
     FD_ZERO(&readfds);
     
-    i32 pcap_fd = pcap_fileno(handle);
+    int32_t pcap_fd = pcap_fileno(handle);
     if (pcap_fd == PCAP_ERROR) {
         fprintf(stderr, "pcap_fileno error\n");
         return false;
@@ -66,7 +72,7 @@ bool recv_packet(pcap_t *handle, u8 *response_state)
 
     FD_SET(pcap_fd, &readfds);
     
-    i32 retval = select(pcap_fd + 1, &readfds, NULL, NULL, &tv);
+    int32_t retval = select(pcap_fd + 1, &readfds, NULL, NULL, &tv);
     if (retval == -1) {
         __log_error("socket error:");
         return false;
@@ -78,7 +84,7 @@ bool recv_packet(pcap_t *handle, u8 *response_state)
     }
     
     if (FD_ISSET(pcap_fd, &readfds)) {
-        if (pcap_dispatch(handle, 1, recv_packet_handler, (u8 *)response_state) == PCAP_ERROR) {
+        if (pcap_dispatch(handle, 1, recv_packet_handler, (uint8_t *)response_state) == PCAP_ERROR) {
             fprintf(stderr, "pcap_dispatch error: %s\n", pcap_geterr(handle));
             return false;
         }

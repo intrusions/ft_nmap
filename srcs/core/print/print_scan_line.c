@@ -1,6 +1,9 @@
-#include "inc.h"
+#include "global_data.h"
+#include "scanner.h"
+#include "tree_node.h"
+#include "services.h"
 
-static char *state_to_str(u8 state)
+static char *state_to_str(uint8_t state)
 {
     if (state == PORT_STATE_CLOSED)
         return "closed";
@@ -16,7 +19,7 @@ static char *state_to_str(u8 state)
         return NULL;
 }
 
-static char *scan_to_str(u8 scan)
+static char *scan_to_str(uint8_t scan)
 {
     if (scan == SCAN_TYPE_SYN)
         return "SYN";
@@ -34,7 +37,7 @@ static char *scan_to_str(u8 scan)
         return NULL;
 }
 
-void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 port_state)
+void print_scan_line(t_global_data *data, uint16_t port, uint32_t scan_type, uint8_t port_state)
 {
     if (!data->opts.show_all && port_state != PORT_STATE_OPEN)
         return ;

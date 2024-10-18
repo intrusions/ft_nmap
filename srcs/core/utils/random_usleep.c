@@ -1,8 +1,11 @@
-#include "inc.h"
+#include <stdint.h>
+#include <time.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void random_usleep()
 {
     srand(time(NULL));
-    u32 delay = 1000 + rand() % 1000;
+    uint32_t delay = 1000 + rand() % 1000;
     usleep(delay);
 }

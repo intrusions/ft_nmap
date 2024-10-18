@@ -1,4 +1,7 @@
-#include "inc.h"
+#include "options.h"
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
 
 bool parse_show_all_from_arg(char *show_all, t_options *opts)
 {

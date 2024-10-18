@@ -1,5 +1,7 @@
-#include "inc.h"
-#include "get_next_line.h"
+#include "options.h"
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
 
 bool open_file(char *file, FILE **flux)
 {

@@ -1,6 +1,12 @@
-#include "inc.h"
+#include "global_data.h"
+#include "network.h"
+#include "scanner.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#include <errno.h>
 
-bool send_tcp_packet(t_global_data *data, i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type)
+bool send_tcp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uint16_t port, uint8_t scan_type)
 {
     t_tcp_packet packet;
     memset(&packet, 0, sizeof(t_tcp_packet));
@@ -34,7 +40,7 @@ bool send_tcp_packet(t_global_data *data, i32 sockfd, sockaddr_in *dest, u16 por
     return true;
 }
 
-bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u16 src_port)
+bool send_udp_packet(int32_t sockfd, sockaddr_in *dest, uint16_t port, uint16_t src_port)
 {
     t_udp_packet packet;
     memset(&packet, 0, sizeof(t_udp_packet));

@@ -1,4 +1,11 @@
-#include "inc.h"
+#include "global_data.h"
+#include "network.h"
+#include "parse.h"
+#include "services.h"
+#include "utils.h"
+#include "scanner.h"
+#include <stdlib.h>
+#include <time.h>
 
 bool nmap(t_global_data *data)
 {

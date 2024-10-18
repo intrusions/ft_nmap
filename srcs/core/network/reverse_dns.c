@@ -1,4 +1,10 @@
-#include "inc.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
+#include "utils.h"
+#include "network.h"
 
 static bool reverse_one_dns(char *addr_in, char *addr)
 {
@@ -9,7 +15,7 @@ static bool reverse_one_dns(char *addr_in, char *addr)
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
 
-    i32 status;
+    int32_t status;
     if ((status = getaddrinfo(addr_in, NULL, &hints, &addr_info)) != 0) {
         fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
         return false;
@@ -36,7 +42,7 @@ static bool reverse_one_dns(char *addr_in, char *addr)
 
 bool reverse_all_dns(t_global_data *data)
 {
-    u8 nb_addr_in = 0;
+    uint8_t nb_addr_in = 0;
     while (data->opts.addr_in[nb_addr_in])
         nb_addr_in++;
         
@@ -46,14 +52,14 @@ bool reverse_all_dns(t_global_data *data)
     data->opts.addr[nb_addr_in] = NULL;
 
 
-    for (u8 i = 0 ; i < nb_addr_in; i++) {
+    for (uint8_t i = 0 ; i < nb_addr_in; i++) {
         data->opts.addr[i] = malloc(INET6_ADDRSTRLEN * sizeof(char));
         if (!data->opts.addr[i])
             return false;
     }
 
     
-    for (u8 i = 0; i < nb_addr_in; i++) {
+    for (uint8_t i = 0; i < nb_addr_in; i++) {
         if (!reverse_one_dns(data->opts.addr_in[i], data->opts.addr[i])) {
             free_str_arr(data->opts.addr_in);
             free_str_arr(data->opts.addr);

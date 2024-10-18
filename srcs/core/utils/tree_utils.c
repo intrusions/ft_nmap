@@ -1,6 +1,6 @@
 #include "inc.h"
 
-static t_services_node *create_node(u16 port, char *service, char *protocol)
+static t_services_node *create_node(uint16_t port, char *service, char *protocol)
 {
     t_services_node *node = malloc(sizeof(t_services_node));
     if (!node)
@@ -25,7 +25,7 @@ t_services_node *create_node_from_line(char *line)
     if (!line_splitted)
         return NULL;
     
-    u16 port = atoi(line_splitted[1]);
+    uint16_t port = atoi(line_splitted[1]);
     char *service = line_splitted[0];
     char *protocol = line_splitted[2];
 

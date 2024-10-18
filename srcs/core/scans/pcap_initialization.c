@@ -1,4 +1,7 @@
-#include "inc.h"
+#include "network.h"
+#include <pcap.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 bool pcap_initialization(pcap_t **handle)
 {

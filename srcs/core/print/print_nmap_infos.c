@@ -1,4 +1,8 @@
-#include "inc.h"
+#include <stdbool.h>
+#include "global_data.h"
+#include "scanner.h"
+#include "utils.h"
+#include "options.h"
 
 void print_nmap_infos(t_global_data *data)
 {
@@ -6,7 +10,7 @@ void print_nmap_infos(t_global_data *data)
 
     /* ip address */
     fprintf(data->opts.output, "[*] Target Ip-Address :\n");
-    for (u8 i = 0; data->opts.addr_in[i]; i++)
+    for (uint8_t i = 0; data->opts.addr_in[i]; i++)
         fprintf(data->opts.output, "       - %s\n", data->opts.addr_in[i]);
     fprintf(data->opts.output, "\n");
 

@@ -1,4 +1,7 @@
-#include "inc.h"
+#include "options.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 bool parse_debug_from_arg(char *debug, t_options *opts)
 {

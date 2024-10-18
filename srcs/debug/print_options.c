@@ -1,11 +1,14 @@
-#include "inc.h"
+#include "options.h"
+#include "global_data.h"
+#include "network.h"
+#include "scanner.h"
 
 void print_options(t_options *opts)
 {
     printf("[DEBUG]:\n\n");
 
     printf("Ports: %d \n    ", opts->n_ports);
-    for (u16 i = 0; i < opts->n_ports; i++) {
+    for (uint16_t i = 0; i < opts->n_ports; i++) {
         printf("%d", opts->ports[i]);
         
         if (i != opts->n_ports - 1)

@@ -1,7 +1,12 @@
-#include "inc.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include "global_data.h"
+#include "services.h"
 #include "get_next_line.h"
+#include "utils.h"
 
-static bool create_arr_from_services_file(char ***services_arr, i16 *file_line_count)
+static bool create_arr_from_services_file(char ***services_arr, int16_t *file_line_count)
 {
     if (!count_line_in_file(SERVICES_FILE_PATH, file_line_count))
         return false;
@@ -10,11 +15,11 @@ static bool create_arr_from_services_file(char ***services_arr, i16 *file_line_c
     if (!*services_arr)
         return false;
 
-    i32 fd;
+    int32_t fd;
     if (!open_fd(SERVICES_FILE_PATH, &fd))
         return false;
 
-    i16 index = 0;
+    int16_t index = 0;
     while (((*services_arr)[index] = get_next_line(fd)))
         index++;
     (*services_arr)[index] = NULL;
@@ -23,12 +28,12 @@ static bool create_arr_from_services_file(char ***services_arr, i16 *file_line_c
     return true;
 }
 
-static t_services_node *create_tree_from_services_arr(char **services_arr, i16 start, i16 end)
+static t_services_node *create_tree_from_services_arr(char **services_arr, int16_t start, int16_t end)
 {
     if (start > end)
         return NULL;
 
-    i16 mid = (start + end) / 2;
+    int16_t mid = (start + end) / 2;
 
     while (services_arr[mid][0] == '#' && mid < end)
         mid++;
@@ -50,7 +55,7 @@ static t_services_node *create_tree_from_services_arr(char **services_arr, i16 s
 bool create_services_tree(t_global_data *data)
 {
     char **services_arr = NULL;
-    i16 file_line_count = 0;
+    int16_t file_line_count = 0;
 
     if (!create_arr_from_services_file(&services_arr, &file_line_count))
         return false;

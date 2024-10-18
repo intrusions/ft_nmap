@@ -1,9 +1,9 @@
 #ifndef __INC_H__
 # define __INC_H__
 
-// ========================================================================= //
-//                                   Header                                  //
-// ========================================================================= //
+========================================================================= //
+                                  Header                                  //
+========================================================================= //
 
 #include <stdio.h>
 #include <stdint.h>
@@ -28,9 +28,9 @@
 #include <pcap.h>
 
 
-// ========================================================================= //
-//                                   Define                                  //
-// ========================================================================= //
+========================================================================= //
+                                  Define                                  //
+========================================================================= //
 
 #define SERVICES_FILE_PATH  "./services/nmap-services"
 
@@ -72,26 +72,26 @@
 #define TCP_SYN_ACK_PCKT    0x1 << 4
 
 
-// ========================================================================= //
-//                                   Macro                                   //
-// ========================================================================= //
+========================================================================= //
+                                  Macro                                   //
+========================================================================= //
 
 #define __log_error(error) (void)fprintf(stderr, "%s: %s\n", error, strerror(errno))
 
 
-// ========================================================================= //
-//                                  Typedef                                  //
-// ========================================================================= //
+========================================================================= //
+                                 Typedef                                  //
+========================================================================= //
 
-typedef uint8_t  u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-typedef uint64_t u64;
+typedef uint8_t  uint8_t;
+typedef uint16_t uint16_t;
+typedef uint32_t uint32_t;
+typedef uint64_t uint64_t;
 
-typedef int8_t  i8;
-typedef int16_t i16;
-typedef int32_t i32;
-typedef int64_t i64;
+typedef int8_t  int8_t;
+typedef int16_t int16_t;
+typedef int32_t int32_t;
+typedef int64_t int64_t;
 
 typedef struct sockaddr_in      sockaddr_in;
 typedef struct sockaddr         sockaddr;
@@ -103,42 +103,42 @@ typedef struct timeval          timeval;
 typedef struct bpf_program      bpf_program;
 
 
-// ========================================================================= //
-//                                  Structure                                //
-// ========================================================================= //
+========================================================================= //
+                                 Structure                                //
+========================================================================= //
 
 typedef struct {
     char **addr_in;
     char **addr;
     char *file;
-    u8 speedup;
-    u16 ports[SIZE_PORTS_ARRAY];
-    u16 n_ports;
-    u32 scan_type;
+    uint8_t speedup;
+    uint16_t ports[SIZE_PORTS_ARRAY];
+    uint16_t n_ports;
+    uint32_t scan_type;
 
     bool debug_mode;
     bool badsum;
     bool show_all;
     bool shuffle_ports;
-    u16 source_port;
+    uint16_t source_port;
     FILE *output;
 } t_options;
 
 typedef struct t_services_node {
     char service[MAX_SIZE_SERVICE_NAME];
     char protocol[MAX_SIZE_PROTO_NAME];
-    u16 port;
+    uint16_t port;
 
     struct t_services_node *left;
     struct t_services_node *right;
 } t_services_node;
 
 typedef struct pseudo_header {
-    i32 source_address;
-    i32 dest_address;
-    i8 placeholder;
-    i8 protocol;
-    i16 tcp_length;
+    int32_t source_address;
+    int32_t dest_address;
+    int8_t placeholder;
+    int8_t protocol;
+    int16_t tcp_length;
 } t_pseudo_header;
 
 typedef struct {
@@ -158,9 +158,9 @@ typedef struct {
 } t_global_data;
 
 
-// ========================================================================= //
-//                                  Prototype                                //
-// ========================================================================= //
+========================================================================= //
+                                 Prototype                                //
+========================================================================= //
 
 /*
 * Parse the command-line arguments and store them in the global data structure.
@@ -169,7 +169,7 @@ typedef struct {
 * @param data: pointer to the global data structure.
 * @return true if arguments were parsed successfully, false otherwise.
 */
-bool parse_arg(i32 ac, char **av, t_global_data *data);
+bool parse_arg(int32_t ac, char **av, t_global_data *data);
 
 /*
 * Parse the `--ports` argument, converting it to a valid ports list.
@@ -280,14 +280,14 @@ bool reverse_all_dns(t_global_data *data);
 * @param sockfd: pointer to the socket file descriptor to be initialized.
 * @return true if the socket was successfully opened, false otherwise.
 */
-bool open_tcp_sockfd(i32 *sockfd);
+bool open_tcp_sockfd(int32_t *sockfd);
 
 /*
 * Open a raw UDP socket for sending custom-crafted packets.
 * @param sockfd: pointer to the socket file descriptor to be initialized.
 * @return true if the socket was successfully opened, false otherwise.
 */
-bool open_udp_sockfd(i32 *sockfd);
+bool open_udp_sockfd(int32_t *sockfd);
 
 /*
 * Perform the nmap scan using the options and global data provided.
@@ -305,7 +305,7 @@ bool process_nmap_scans(t_global_data *data);
 * @param scan_type: type of scan (e.g., SYN, ACK).
 * @return true if the packet was successfully sent, false otherwise.
 */
-bool send_tcp_packet(t_global_data *data, i32 sockfd, sockaddr_in *dest, u16 port, u8 scan_type);
+bool send_tcp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uint16_t port, uint8_t scan_type);
 
 /*
 * Send a custom UDP packet to a specific port.
@@ -315,7 +315,7 @@ bool send_tcp_packet(t_global_data *data, i32 sockfd, sockaddr_in *dest, u16 por
 * @param src_port: the source port to be used in the packet.
 * @return true if the packet was successfully sent, false otherwise.
 */
-bool send_udp_packet(i32 sockfd, sockaddr_in *dest, u16 port, u16 src_port);
+bool send_udp_packet(int32_t sockfd, sockaddr_in *dest, uint16_t port, uint16_t src_port);
 
 /*
 * Load the `nmap-services` file, building a binary tree of known services for port scanning.
@@ -330,7 +330,7 @@ bool create_services_tree(t_global_data *data);
 * @param tcp_sockfd: TCP socket file descriptor to be closed.
 * @param udp_sockfd: UDP socket file descriptor to be closed.
 */
-void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd);
+void cleanup_resources(t_global_data *data, int32_t tcp_sockfd, int32_t udp_sockfd);
 
 /*
 * Display the program's manual (help page) to the user.
@@ -358,14 +358,14 @@ void print_nmap_resume(timespec start_time, timespec end_time, FILE *output);
 * @param scan_type: type of scan used for this result.
 * @param port_state: state of the port (e.g., open, closed).
 */
-void print_scan_line(t_global_data *data, u16 port, u32 scan_type, u8 port_state);
+void print_scan_line(t_global_data *data, uint16_t port, uint32_t scan_type, uint8_t port_state);
 
 /*
 * Print the header before starting a scan on a specific IP.
 * @param data: pointer to the global data structure.
 * @param addr_index: index of the IP address in `addr` being scanned.
 */
-void print_scan_ip_header(t_global_data *data, u8 addr_index);
+void print_scan_ip_header(t_global_data *data, uint8_t addr_index);
 
 /*
 * Retrieve the source IP address from the available network interfaces.
@@ -393,7 +393,7 @@ void random_usleep(void);
 * @param array: pointer to the array of ports.
 * @param n: number of elements in the array.
 */
-void shuffle_ports(u16 *array, u16 n);
+void shuffle_ports(uint16_t *array, uint16_t n);
 
 /*
 * Initialize pcap for packet capture.
@@ -417,14 +417,14 @@ bool set_pcap_filter(pcap_t **handle, char *dest_addr);
 * @param response_state: pointer to the variable where the packet state will be stored.
 * @return true if a packet was successfully received and analyzed, false otherwise.
 */
-bool recv_packet(pcap_t *handle, u8 *response_state);
+bool recv_packet(pcap_t *handle, uint8_t *response_state);
 
 
 /*
 * service binary tree function.
 */
 t_services_node *create_node_from_line(char *line);
-t_services_node *search_node(t_services_node *root, u16 port, char *protocol);
+t_services_node *search_node(t_services_node *root, uint16_t port, char *protocol);
 void free_services_tree(t_services_node *node);
 
 
@@ -441,13 +441,13 @@ void print_services_tree(t_services_node *node, int depth);
 char **split(char *str, char *charset);
 void free_str_arr(char **arr);
 bool str_is_digit(char *str);
-bool is_odd(i32 n);
+bool is_odd(int32_t n);
 bool is_sudo_mode();
 void print_dash_line(FILE *output);
-u16 checksum(void *b, int len);
+uint16_t checksum(void *b, int len);
 
-bool count_line_in_file(char *file, i16 *file_line_count);
-bool open_fd(char *file, i32 *fd);
+bool count_line_in_file(char *file, int16_t *file_line_count);
+bool open_fd(char *file, int32_t *fd);
 
 
 #endif /* __INC_H__ */

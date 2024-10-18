@@ -1,4 +1,6 @@
-#include "inc.h"
+#include "options.h"
+#include "scanner.h"
+#include <stdint.h>
 
 void set_default_opts_val(t_options *opts)
 {
@@ -16,6 +18,6 @@ void set_default_opts_val(t_options *opts)
     opts->shuffle_ports = true;
     opts->output = stdout;
     
-    for (u16 i = 0; i < SIZE_PORTS_ARRAY; i++)
+    for (uint16_t i = 0; i < SIZE_PORTS_ARRAY; i++)
         opts->ports[i] = i + 1;
 }

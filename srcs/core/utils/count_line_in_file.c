@@ -1,9 +1,12 @@
-#include "inc.h"
 #include "get_next_line.h"
+#include "utils.h"
+#include <stdbool.h>
+#include <unistd.h>
+#include <stdint.h>
 
-bool count_line_in_file(char *file, i16 *file_line_count)
+bool count_line_in_file(char *file, int16_t *file_line_count)
 {
-    i32 fd;
+    int32_t fd;
     if (!open_fd(file, &fd))
         return false;
 

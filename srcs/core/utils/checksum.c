@@ -1,17 +1,20 @@
-#include "inc.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include "network.h"
 
-u16 checksum(void *b, int len)
+uint16_t checksum(void *b, int len)
 {
-    u16 *buf = b;
-    u32 sum = 0;
-    u16 result;
+    uint16_t *buf = b;
+    uint32_t sum = 0;
+    uint16_t result;
 
     for (sum = 0; len > 1; len -= 2) {
         sum += *buf++;
     }
     
     if (len == 1) {
-        sum += *(u8*)buf;
+        sum += *(uint8_t*)buf;
     }
     
     sum = (sum >> 16) + (sum & 0xFFFF);
@@ -38,7 +41,7 @@ bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip)
     memcpy(pseudogram, &psh, sizeof(t_pseudo_header));
     memcpy(pseudogram + sizeof(t_pseudo_header), &packet->hdr, sizeof(tcphdr));
 
-    packet->hdr.check = checksum((u8 *)pseudogram, sizeof(t_pseudo_header) + sizeof(tcphdr));
+    packet->hdr.check = checksum((uint8_t *)pseudogram, sizeof(t_pseudo_header) + sizeof(tcphdr));
 
     free(pseudogram);
     

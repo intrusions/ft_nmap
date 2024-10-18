@@ -1,4 +1,7 @@
-#include "inc.h"
+#include "options.h"
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
 
 bool parse_shuffle_ports_from_arg(char *shuffle_ports, t_options *opts)
 {

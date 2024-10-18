@@ -1,6 +1,10 @@
-#include "inc.h"
+#include "utils.h"
+#include "services.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <unistd.h>
 
-void cleanup_resources(t_global_data *data, i32 tcp_sockfd, i32 udp_sockfd)
+void cleanup_resources(t_global_data *data, int32_t tcp_sockfd, int32_t udp_sockfd)
 {
     free_str_arr(data->opts.addr_in);
     free_str_arr(data->opts.addr);

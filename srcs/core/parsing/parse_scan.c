@@ -1,6 +1,10 @@
-#include "inc.h"
+#include <string.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include "scanner.h"
+#include "utils.h"
 
-static u32 what_type_scan(char *scan_str)
+static uint32_t what_type_scan(char *scan_str)
 {
     if (!strcmp(scan_str, "SYN"))
         return SCAN_TYPE_SYN;
@@ -20,7 +24,7 @@ static u32 what_type_scan(char *scan_str)
 
 static bool process_scan_string(char *scan_str, t_options *opts)
 {
-    u32 scan_type_bit = what_type_scan(scan_str);
+    uint32_t scan_type_bit = what_type_scan(scan_str);
     
     if (scan_type_bit == SCAN_TYPE_UNKNOWN) {
         fprintf(stderr, "%s scan is not valid.\n", scan_str);
@@ -39,7 +43,7 @@ bool parse_scan_from_arg(char *scan, t_options *opts)
     if (!comma_splitted)
         return false;
     
-    for (u8 i = 0; comma_splitted[i]; i++) {
+    for (uint8_t i = 0; comma_splitted[i]; i++) {
         if (!process_scan_string(comma_splitted[i], opts)) {
             free_str_arr(comma_splitted);
             return false;

@@ -1,4 +1,8 @@
-#include "inc.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "network.h"
 
 static bool create_pcap_filter(char **buffer, const char *dest_addr)
 {
@@ -6,7 +10,7 @@ static bool create_pcap_filter(char **buffer, const char *dest_addr)
                                    or ((tcp[tcpflags] & (tcp-syn | tcp-ack)) == (tcp-syn | tcp-ack)) \
                                    or icmp)";
 
-    i32 size = snprintf(NULL, 0, filter_str, dest_addr) + 1;
+    int32_t size = snprintf(NULL, 0, filter_str, dest_addr) + 1;
 
     *buffer = (char *)malloc(size);
     if (!*buffer)
@@ -22,7 +26,7 @@ bool set_pcap_filter(pcap_t **handle, char *dest_addr)
     if (!create_pcap_filter(&filter_str, dest_addr))
         return false;
 
-    bpf_program filter;
+    struct bpf_program filter;
     if (pcap_compile(*handle, &filter, filter_str, 0, PCAP_NETMASK_UNKNOWN) == PCAP_ERROR) {
         fprintf(stderr, "pcap_compile error: %s\n", pcap_geterr(*handle));
         return false;

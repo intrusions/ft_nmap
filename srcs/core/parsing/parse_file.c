@@ -1,5 +1,7 @@
-#include "inc.h"
+#include <stdbool.h>
 #include "get_next_line.h"
+#include "options.h"
+#include "utils.h"
 
 bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set)
 {
@@ -8,7 +10,7 @@ bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set)
         return false;
     }
 
-    i16 file_line_count = 0;
+    int16_t file_line_count = 0;
     if (!count_line_in_file(file, &file_line_count))
         return false;
 
@@ -16,11 +18,11 @@ bool parse_file_from_arg(char *file, t_options *opts, bool *ip_is_set)
     if (!opts->addr_in)
         return false;
 
-    i32 fd;
+    int32_t fd;
     if (!open_fd(file, &fd))
         return false;
 
-    i16 addr_in_index = 0;
+    int16_t addr_in_index = 0;
     while ((opts->addr_in[addr_in_index] = get_next_line(fd)) != NULL) {
         addr_in_index++;
     }
