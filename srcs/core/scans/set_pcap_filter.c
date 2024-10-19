@@ -1,8 +1,8 @@
+#include "network.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "network.h"
 
 static bool create_pcap_filter(char **buffer, const char *dest_addr)
 {

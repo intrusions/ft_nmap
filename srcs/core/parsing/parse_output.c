@@ -3,12 +3,12 @@
 #include <string.h>
 #include <stdio.h>
 
-bool open_file(char *file, FILE **flux)
+bool open_file(char *file, FILE **stream)
 {
     char *mode = "a";
-    *flux = fopen(file, mode);
+    *stream = fopen(file, mode);
 
-    if (!*flux) {
+    if (!*stream) {
         perror("fopen error");
         return false;
     }
@@ -18,10 +18,10 @@ bool open_file(char *file, FILE **flux)
 
 bool parse_output_from_arg(char *file, t_options *opts)
 {
-    FILE *flux;
-    if (!open_file(file, &flux))
+    FILE *stream;
+    if (!open_file(file, &stream))
         return false;
 
-    opts->output = flux;
+    opts->output = stream;
     return true;
 }

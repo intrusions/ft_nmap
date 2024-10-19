@@ -1,8 +1,8 @@
-#include <stdbool.h>
 #include "global_data.h"
 #include "scanner.h"
 #include "utils.h"
 #include "options.h"
+#include <stdbool.h>
 
 void print_nmap_infos(t_global_data *data)
 {

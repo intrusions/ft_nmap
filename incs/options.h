@@ -5,10 +5,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define SIZE_PORTS_ARRAY    1024
 #define MAX_PORT_VALUE      65535
 #define MAX_SPEEDUP_VALUE   250
 #define DEFAULT_SOURCE_PORT 1337
+
+#define SIZE_PORTS_ARRAY    1024
 
 typedef struct options {
     char **addr_in;

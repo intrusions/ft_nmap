@@ -1,6 +1,7 @@
 #include "utils.h"
 #include <stdio.h>
 #include <time.h>
+
 void print_nmap_resume(struct timespec start_time, struct timespec end_time, FILE *output)
 {
     double time_spent;

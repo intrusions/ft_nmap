@@ -1,7 +1,7 @@
+#include "network.h"
 #include <stdbool.h>
 #include <pcap.h>
 #include <stdio.h>
-#include "network.h"
 
 bool get_src_ip(char *src_ip)
 {

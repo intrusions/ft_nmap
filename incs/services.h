@@ -1,10 +1,10 @@
 #ifndef __SERVICES_H__
 # define __SERVICES_H__
 
-#include <stdint.h>
-#include <stdbool.h>
 #include "global_data.h"
 #include "tree_node.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 
 #define SERVICES_FILE_PATH  "./services/nmap-services"

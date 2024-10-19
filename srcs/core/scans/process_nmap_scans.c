@@ -1,10 +1,10 @@
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h>
 #include "scanner.h"
 #include "network.h"
 #include "global_data.h"
 #include "utils.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
 
 static uint8_t get_port_state(uint32_t scan_type, uint8_t response)
 {

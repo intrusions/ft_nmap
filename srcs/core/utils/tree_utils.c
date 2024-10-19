@@ -1,4 +1,7 @@
-#include "inc.h"
+#include "services.h"
+#include "utils.h"
+#include <stdint.h>
+#include <string.h>
 
 static t_services_node *create_node(uint16_t port, char *service, char *protocol)
 {
@@ -35,7 +38,8 @@ t_services_node *create_node_from_line(char *line)
     return node;
 }
 
-void free_services_tree(t_services_node *node) {
+void free_services_tree(t_services_node *node)
+{
     if (!node)
         return;
 

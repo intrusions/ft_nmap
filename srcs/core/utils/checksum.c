@@ -1,7 +1,7 @@
+#include "network.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "network.h"
 
 uint16_t checksum(void *b, int len)
 {

@@ -1,10 +1,10 @@
+#include "utils.h"
+#include "network.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
-#include "utils.h"
-#include "network.h"
 
 static bool reverse_one_dns(char *addr_in, char *addr)
 {

@@ -1,9 +1,9 @@
 #ifndef __SCANNER_H__
 # define __SCANNER_H__
 
+#include "global_data.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <global_data.h>
 
 #define SCAN_TYPE_SYN       0x01 << 0
 #define SCAN_TYPE_NULL      0x01 << 1

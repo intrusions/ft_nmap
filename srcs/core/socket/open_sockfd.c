@@ -1,9 +1,9 @@
+#include "global_data.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <errno.h>
-#include "global_data.h"
 
 bool open_tcp_sockfd(int32_t *sockfd)
 {

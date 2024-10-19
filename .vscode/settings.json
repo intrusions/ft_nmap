@@ -10,6 +10,7 @@
         "stdbool.h": "c",
         "get_next_line.h": "c",
         "time.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "tree_node.h": "c"
     }
 }

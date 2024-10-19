@@ -1,5 +1,5 @@
-#ifndef __TREE_NODE__
-# define __TREE_NODE__
+#ifndef __TREE_NODE_H__
+# define __TREE_NODE_H__
 
 #include <stdint.h>
 
@@ -16,5 +16,4 @@ struct s_services_node {
 
 typedef struct s_services_node t_services_node;
 
-
-#endif  /* __TREE_NODE */
+#endif  /* __TREE_NODE_H__ */

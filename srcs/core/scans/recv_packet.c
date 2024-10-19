@@ -1,10 +1,10 @@
+#include "network.h"
+#include "global_data.h"
+#include "scanner.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <errno.h>
 #include <netinet/ip_icmp.h>
-#include "network.h"
-#include "global_data.h"
-#include "scanner.h"
 
 static void recv_packet_handler(uint8_t *state, const struct pcap_pkthdr *header, const u_char *packet)
 {

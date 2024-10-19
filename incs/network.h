@@ -85,10 +85,35 @@ bool get_src_ip(char *src_ip);
 */
 bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip);
 
+/*
+* Receive packets and analyze their state (open, closed, filtered, etc.).
+* @param handle: pointer to the pcap handle for capturing packets.
+* @param response_state: pointer to the variable where the packet state will be stored.
+* @return true if a packet was successfully received and analyzed, false otherwise.
+*/
 bool recv_packet(pcap_t *handle, uint8_t *response_state);
+
+/*
+* Set a pcap filter for capturing packets related to a specific destination address 
+*   and type of scan.
+* @param handle: pointer to the pcap handle.
+* @param dest_addr: destination IP address as a string.
+* @return true if the filter was successfully set, false otherwise.
+*/
 bool set_pcap_filter(pcap_t **handle, char *dest_addr);
+
+/*
+* Initialize pcap for packet capture.
+* @param handle: pointer to the pcap handle that will be initialized.
+* @return true if pcap was initialized successfully, false otherwise.
+*/
 bool pcap_initialization(pcap_t **handle);
-bool reverse_all_dns(t_global_data *data);
+
+/*
+* Perform reverse DNS lookups for all IP addresses in the global data structure.
+* @param data: pointer to the global data structure containing the IP addresses.
+* @return true if reverse DNS lookups were successful, false otherwise.
+*/
 bool reverse_all_dns(t_global_data *data);
 
 #endif /* NETWORK_H */

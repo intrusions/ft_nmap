@@ -1,10 +1,10 @@
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdlib.h>
 #include "global_data.h"
 #include "services.h"
 #include "get_next_line.h"
 #include "utils.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 static bool create_arr_from_services_file(char ***services_arr, int16_t *file_line_count)
 {

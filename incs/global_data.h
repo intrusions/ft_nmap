@@ -1,17 +1,17 @@
 #ifndef __GLOBAL_DATA_H__
 # define __GLOBAL_DATA_H__
 
+#include "options.h"
+#include "tree_node.h"
 #include <pcap.h>
 #include <stdio.h>
 #include <string.h>
-#include "options.h"
-#include "tree_node.h"
 
 #define __log_error(error) (void)fprintf(stderr, "%s: %s\n", error, strerror(errno))
 
 typedef struct timespec timespec;
 
-typedef struct global_data {
+typedef struct {
     char src_ip[INET_ADDRSTRLEN];
     pcap_t *handle;
     t_options opts;
