@@ -100,7 +100,7 @@ bool recv_packet(pcap_t *handle, uint8_t *response_state);
 * @param dest_addr: destination IP address as a string.
 * @return true if the filter was successfully set, false otherwise.
 */
-bool set_pcap_filter(pcap_t **handle, char *dest_addr);
+bool set_pcap_filter(pcap_t **handle, char *serv_addr, uint16_t port);
 
 /*
 * Initialize pcap for packet capture.

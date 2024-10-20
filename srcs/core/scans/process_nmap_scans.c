@@ -109,11 +109,11 @@ bool process_nmap_scans(t_global_data *data)
         dest.sin_family = AF_INET;  
         dest.sin_addr.s_addr = inet_addr(data->opts.addr[addr_index]);
 
-        if (!set_pcap_filter(&data->handle, data->opts.addr[addr_index]))
-            goto error;
-
         for (uint16_t port_index = 0; port_index < data->opts.n_ports; port_index++) {
             uint16_t port = data->opts.ports[port_index];
+
+            if (!set_pcap_filter(&data->handle, data->opts.addr[addr_index], port))
+                goto error;
 
             if (!process_port_scan(data, tcp_sockfd, udp_sockfd, &dest, port))
                 goto error;

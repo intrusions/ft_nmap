@@ -4,26 +4,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool create_pcap_filter(char **buffer, const char *dest_addr)
+static bool create_pcap_filter(char **buffer, const char *serv_addr, uint16_t port)
 {
-    const char filter_str[] = "(src host %s) and ((tcp[tcpflags] & tcp-rst != 0) \
+    const char filter_str[] = "(src host %s and src port %d) and ((tcp[tcpflags] & tcp-rst != 0) \
                                    or ((tcp[tcpflags] & (tcp-syn | tcp-ack)) == (tcp-syn | tcp-ack)) \
                                    or icmp)";
 
-    int32_t size = snprintf(NULL, 0, filter_str, dest_addr) + 1;
+    int32_t size = snprintf(NULL, 0, filter_str, serv_addr, port) + 1;
 
     *buffer = (char *)malloc(size);
     if (!*buffer)
         return false;
 
-    snprintf(*buffer, size, filter_str, dest_addr);
+    snprintf(*buffer, size, filter_str, serv_addr, port);
     return true;
 }
 
-bool set_pcap_filter(pcap_t **handle, char *dest_addr)
+bool set_pcap_filter(pcap_t **handle, char *serv_addr, uint16_t port)
 {
     char *filter_str;
-    if (!create_pcap_filter(&filter_str, dest_addr))
+    if (!create_pcap_filter(&filter_str, serv_addr, port))
         return false;
 
     struct bpf_program filter;
