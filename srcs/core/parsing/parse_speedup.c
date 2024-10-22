@@ -18,6 +18,11 @@ static bool is_valid_speedup(char *speedup_str, uint8_t *speed_val)
         return false;
     }
 
+    if (val == 0) {
+        fprintf(stderr, "%ld is not a valid value. min value is %d.\n", val, 1);
+        return false;
+    }
+
     *speed_val = (uint8_t)val;
     return true;
 }
