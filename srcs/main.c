@@ -41,7 +41,6 @@ int main(int ac, char **av)
             || !reverse_all_dns(&g_data)
             || !create_services_tree(&g_data)
             || !get_src_ip(g_data.src_ip)
-            || !pcap_initialization(&g_data.handle)
             || !nmap(&g_data))
         return EXIT_FAILURE;
     

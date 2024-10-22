@@ -2,9 +2,11 @@
 #include "network.h"
 #include "global_data.h"
 #include "utils.h"
+#include "threads.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include <pthread.h>
 
 static uint8_t get_port_state(uint32_t scan_type, uint8_t response)
 {
@@ -48,7 +50,7 @@ static uint8_t get_port_state(uint32_t scan_type, uint8_t response)
     return SCAN_TYPE_UNKNOWN;
 }
 
-static bool process_port_scan(t_global_data *data, int32_t tcp_sockfd, int32_t udp_sockfd, sockaddr_in *dest, int16_t port)
+static bool perform_port_scan(t_global_data *data, int32_t tcp_sockfd, int32_t udp_sockfd, sockaddr_in *dest, int16_t port, pcap_t *handle)
 {
     uint32_t scan_types[NUM_SCAN_TYPE] = {
         SCAN_TYPE_SYN,
@@ -78,7 +80,7 @@ static bool process_port_scan(t_global_data *data, int32_t tcp_sockfd, int32_t u
             continue ;
 
         uint8_t scan_response;
-        if (!recv_packet(data->handle, &scan_response))
+        if (!recv_packet(handle, &scan_response))
             return false;
         
         print_scan_line(
@@ -94,11 +96,46 @@ static bool process_port_scan(t_global_data *data, int32_t tcp_sockfd, int32_t u
     return true;
 }
 
+void *scan_port_range(void *args)
+{
+    t_thread_args *thread_args = (t_thread_args *)args;
+    t_global_data *data = thread_args->data;
+    int32_t tcp_socket = thread_args->tcp_sockfd;
+    int32_t udp_socket = thread_args->udp_sockfd;
+    sockaddr_in dest = thread_args->dest;
+
+    pcap_t *handle = NULL;
+    if (!pcap_initialization(&handle))
+            goto exit_thread;
+
+    for (uint16_t i = thread_args->start_port_index; i <= thread_args->end_port_index; i++) {
+        uint16_t port = data->opts.ports[i];
+        
+        if (!set_pcap_filter(&handle, inet_ntoa(dest.sin_addr), port))
+            goto exit_thread;
+
+        if (!perform_port_scan(data, tcp_socket, udp_socket, &dest, port, handle))
+            goto exit_thread;
+    }
+    
+    goto exit_thread;
+
+exit_thread:
+    if (handle)
+        pcap_close(handle);
+    pthread_exit(NULL);
+}
+
 bool process_nmap_scans(t_global_data *data)
 {
     int32_t tcp_sockfd = 0, udp_sockfd = 0;
-    if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd))
-        goto error;
+    if (!open_tcp_sockfd(&tcp_sockfd) || !open_udp_sockfd(&udp_sockfd)) {
+        cleanup_resources(data, tcp_sockfd, udp_sockfd);
+        return false;
+    }
+
+    pthread_t threads[data->opts.speedup];
+    t_thread_args thread_args[data->opts.speedup];
 
     fprintf(data->opts.output, "[*] [SCANNING]");
     for (uint8_t addr_index = 0; data->opts.addr[addr_index]; addr_index++) {
@@ -109,23 +146,25 @@ bool process_nmap_scans(t_global_data *data)
         dest.sin_family = AF_INET;  
         dest.sin_addr.s_addr = inet_addr(data->opts.addr[addr_index]);
 
-        for (uint16_t port_index = 0; port_index < data->opts.n_ports; port_index++) {
-            uint16_t port = data->opts.ports[port_index];
+        uint16_t ports_per_thread = data->opts.n_ports / data->opts.speedup;
+        uint16_t remainder_ports = data->opts.n_ports % data->opts.speedup;
 
-            if (!set_pcap_filter(&data->handle, data->opts.addr[addr_index], port))
-                goto error;
+        uint16_t curr_port_index = 0;
+        for (uint16_t thread_index = 0; thread_index < data->opts.speedup; thread_index++) {
+            initialize_thread_args(&thread_args[thread_index], data, tcp_sockfd, udp_sockfd,
+                                        dest, thread_index, data->opts.speedup,
+                                        &curr_port_index, ports_per_thread, remainder_ports);
 
-            if (!process_port_scan(data, tcp_sockfd, udp_sockfd, &dest, port))
-                goto error;
+            if (pthread_create(&threads[thread_index], NULL, scan_port_range, (void *)&thread_args[thread_index])) {
+                cleanup_resources(data, tcp_sockfd, udp_sockfd);
+                return false;
+            }
         }
+        
+        for (uint8_t thread_index = 0; thread_index < data->opts.speedup; thread_index++)
+            pthread_join(threads[thread_index], NULL);
     }
-    goto success;
-
-error:
-    cleanup_resources(data, tcp_sockfd, udp_sockfd);
-    return false;
-
-success:
+    
     cleanup_resources(data, tcp_sockfd, udp_sockfd);
     return true;
 }

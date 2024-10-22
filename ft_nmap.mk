@@ -47,6 +47,7 @@ SRCS :=                                  \
     core/services/tree_utils.c           \
     core/scans/process_nmap_scans.c      \
     core/scans/pcap_initialization.c     \
+    core/scans/initialize_thread_args.c   \
     core/scans/send_packet.c             \
     core/scans/recv_packet.c             \
     core/scans/set_pcap_filter.c         \

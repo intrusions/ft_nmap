@@ -15,7 +15,4 @@ void cleanup_resources(t_global_data *data, int32_t tcp_sockfd, int32_t udp_sock
     
     if (udp_sockfd)
         close(udp_sockfd);
-
-    if (data->handle)
-        pcap_close(data->handle);
 }

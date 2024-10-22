@@ -13,7 +13,6 @@ typedef struct timespec timespec;
 
 typedef struct {
     char src_ip[INET_ADDRSTRLEN];
-    pcap_t *handle;
     t_options opts;
     t_services_node *services;
 } t_global_data;

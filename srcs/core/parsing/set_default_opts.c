@@ -4,7 +4,7 @@
 
 void set_default_opts_val(t_options *opts)
 {
-    opts->speedup = 0;
+    opts->speedup = 1;
     opts->n_ports = 1024;
     opts->source_port = DEFAULT_SOURCE_PORT;
     opts->debug_mode = false;
