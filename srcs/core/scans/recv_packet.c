@@ -66,7 +66,7 @@ bool recv_packet(pcap_t *handle, uint8_t *response_state)
     
     int32_t pcap_fd = pcap_fileno(handle);
     if (pcap_fd == PCAP_ERROR) {
-        fprintf(stderr, "pcap_fileno error\n");
+        fprintf(stderr, "pcap_fileno error %s\n", pcap_geterr(handle));
         return false;
     }
 
