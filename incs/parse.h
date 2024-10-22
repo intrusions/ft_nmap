@@ -4,6 +4,7 @@
 #include "options.h"
 #include "global_data.h"
 
+
 /*
 * Parse the command-line arguments and store them in the global data structure.
 * @param ac: argument count.

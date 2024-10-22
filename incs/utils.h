@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+
 /*
 * Sleep for a random interval between 1000 and 2000 microseconds.
 */
@@ -36,7 +37,8 @@ bool open_fd(char *file, int32_t *fd);
 bool count_line_in_file(char *file, int16_t *file_line_count);
 
 /*
-* Check if the provided string represents a digit.
+* Check if the *
+ provided string represents a digit.
 * @param str: string to check.
 * @return true if the string contains only digits, false otherwise.
 */

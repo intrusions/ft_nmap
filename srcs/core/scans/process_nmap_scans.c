@@ -103,12 +103,14 @@ void *scan_port_range(void *args)
     int32_t tcp_socket = thread_args->tcp_sockfd;
     int32_t udp_socket = thread_args->udp_sockfd;
     sockaddr_in dest = thread_args->dest;
+    uint16_t start_port_index = thread_args->start_port_index;
+    uint16_t end_port_index = thread_args->end_port_index;
 
     pcap_t *handle = NULL;
     if (!pcap_initialization(&handle))
             goto exit_thread;
 
-    for (uint16_t i = thread_args->start_port_index; i <= thread_args->end_port_index; i++) {
+    for (uint16_t i = start_port_index; i <= end_port_index; i++) {
         uint16_t port = data->opts.ports[i];
         
         if (!set_pcap_filter(&handle, inet_ntoa(dest.sin_addr), port))
