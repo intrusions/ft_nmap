@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-void print_man() {
+void print_man(void)
+{
     printf(
         "Usage:\n"
         "   ft_nmap [options]\n"

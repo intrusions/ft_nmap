@@ -53,7 +53,7 @@ void print_dash_line(FILE *output);
 /*
 * Display the manual/help page for the program.
 */
-void print_man();
+void print_man(void);
 
 /*
 * Free an array of strings.
@@ -102,6 +102,6 @@ void print_scan_ip_header(t_global_data *data, uint8_t addr_index);
 * Check if the program is running in sudo mode (with root privileges).
 * @return true if the program is running with sudo, false otherwise.
 */
-bool is_sudo_mode();
+bool is_sudo_mode(void);
 
 #endif /* UTILS_H */
