@@ -136,8 +136,12 @@ bool process_nmap_scans(t_global_data *data)
         return false;
     }
 
-    pthread_t threads[data->opts.speedup];
-    t_thread_args thread_args[data->opts.speedup];
+    uint16_t n_threads = data->opts.speedup > data->opts.n_ports
+                            ? data->opts.n_ports
+                            : data->opts.speedup;
+    
+    pthread_t threads[n_threads];
+    t_thread_args thread_args[n_threads];
 
     fprintf(data->opts.output, "[*] [SCANNING]");
     for (uint8_t addr_index = 0; data->opts.addr[addr_index]; addr_index++) {
@@ -148,13 +152,13 @@ bool process_nmap_scans(t_global_data *data)
         dest.sin_family = AF_INET;  
         dest.sin_addr.s_addr = inet_addr(data->opts.addr[addr_index]);
 
-        uint16_t ports_per_thread = data->opts.n_ports / data->opts.speedup;
-        uint16_t remainder_ports = data->opts.n_ports % data->opts.speedup;
+        uint16_t ports_per_thread = data->opts.n_ports / n_threads;
+        uint16_t remainder_ports = data->opts.n_ports % n_threads;
 
         uint16_t curr_port_index = 0;
-        for (uint16_t thread_index = 0; thread_index < data->opts.speedup; thread_index++) {
+        for (uint16_t thread_index = 0; thread_index < n_threads; thread_index++) {
             initialize_thread_args(&thread_args[thread_index], data, tcp_sockfd, udp_sockfd,
-                                        dest, thread_index, data->opts.speedup,
+                                        dest, thread_index, n_threads,
                                         &curr_port_index, ports_per_thread, remainder_ports);
 
             if (pthread_create(&threads[thread_index], NULL, scan_port_range, (void *)&thread_args[thread_index])) {
@@ -163,7 +167,7 @@ bool process_nmap_scans(t_global_data *data)
             }
         }
         
-        for (uint8_t thread_index = 0; thread_index < data->opts.speedup; thread_index++)
+        for (uint8_t thread_index = 0; thread_index < n_threads ; thread_index++)
             pthread_join(threads[thread_index], NULL);
     }
     

@@ -39,7 +39,8 @@ static char *scan_to_str(uint8_t scan)
 
 void print_scan_line(t_global_data *data, uint16_t port, uint32_t scan_type, uint8_t port_state)
 {
-    if (!data->opts.show_all && port_state != PORT_STATE_OPEN)
+    if (!data->opts.show_all 
+            && port_state != PORT_STATE_OPEN)
         return ;
     
     char *state_str = state_to_str(port_state);
