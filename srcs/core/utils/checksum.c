@@ -32,7 +32,7 @@ bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip)
     psh.dest_address = dest->sin_addr.s_addr;
     psh.placeholder = 0;
     psh.protocol = IPPROTO_TCP;
-    psh.tcp_length = htons(sizeof(struct tcphdr));
+    psh.length = htons(sizeof(struct tcphdr));
 
     char *pseudogram = malloc(sizeof(t_pseudo_header) + sizeof(tcphdr));
     if (!pseudogram)
@@ -44,6 +44,28 @@ bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip)
     packet->hdr.check = checksum((uint8_t *)pseudogram, sizeof(t_pseudo_header) + sizeof(tcphdr));
 
     free(pseudogram);
-    
+    return true;
+}
+
+bool udp_checksum(sockaddr_in *dest, t_udp_packet *packet, char *src_ip)
+{
+    t_pseudo_header psh;
+
+    psh.source_address = inet_addr(src_ip);
+    psh.dest_address = dest->sin_addr.s_addr;
+    psh.placeholder = 0;
+    psh.protocol = IPPROTO_UDP;
+    psh.length = htons(sizeof(udphdr));
+
+    char *pseudogram = malloc(sizeof(t_pseudo_header) + sizeof(udphdr));
+    if (!pseudogram)
+        return false;
+
+    memcpy(pseudogram, &psh, sizeof(t_pseudo_header));
+    memcpy(pseudogram + sizeof(t_pseudo_header), &packet->hdr, sizeof(udphdr));
+
+    packet->hdr.check = checksum((uint8_t *)pseudogram, sizeof(t_pseudo_header) + sizeof(udphdr));
+
+    free(pseudogram);
     return true;
 }

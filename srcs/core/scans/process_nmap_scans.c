@@ -65,7 +65,7 @@ static bool perform_port_scan(t_global_data *data, int32_t tcp_sockfd, int32_t u
         bool packed_sended = false;
 
         if ((scan_types[i] == SCAN_TYPE_UDP) && (data->opts.scan_type & SCAN_TYPE_UDP)) {
-            if (!send_udp_packet(udp_sockfd, dest, port, data->opts.source_port))
+            if (!send_udp_packet(data, udp_sockfd, dest, port))
                 return false;
 
             packed_sended = true;

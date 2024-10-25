@@ -11,6 +11,9 @@
         "get_next_line.h": "c",
         "time.h": "c",
         "stdlib.h": "c",
-        "tree_node.h": "c"
+        "tree_node.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c"
     }
 }

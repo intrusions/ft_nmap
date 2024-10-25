@@ -22,7 +22,7 @@ typedef struct pseudo_header {
     int32_t dest_address;
     int8_t  placeholder;
     int8_t  protocol;
-    int16_t tcp_length;
+    int16_t length;
 } t_pseudo_header;
 
 typedef struct {
@@ -61,13 +61,14 @@ bool send_tcp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uin
 
 /*
 * Send a custom UDP packet to a specific port.
+* @param data: pointer to the global data structure containing the scan configuration.
 * @param sockfd: the UDP socket file descriptor.
 * @param dest: pointer to the destination address structure.
 * @param port: the destination port to which the packet will be sent.
 * @param src_port: the source port to be used in the packet.
 * @return true if the packet was successfully sent, false otherwise.
 */
-bool send_udp_packet(int32_t sockfd, sockaddr_in *dest, uint16_t port, uint16_t src_port);
+bool send_udp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uint16_t port);
 
 /*
 * Retrieve the source IP address from the available network interfaces.
@@ -84,6 +85,15 @@ bool get_src_ip(char *src_ip);
 * @return true if the checksum was calculated successfully, false otherwise.
 */
 bool tcp_checksum(sockaddr_in *dest, t_tcp_packet *packet, char *src_ip);
+
+/*
+* Calculate the checksum for the UDP header, including a pseudo-IP header for validation.
+* @param dest: pointer to the destination address structure.
+* @param packet: pointer to the UDP packet structure.
+* @param src_ip: source IP address to be included in the checksum calculation.
+* @return true if the checksum was calculated successfully, false otherwise.
+*/
+bool udp_checksum(sockaddr_in *dest, t_udp_packet *packet, char *src_ip);
 
 /*
 * Receive packets and analyze their state (open, closed, filtered, etc.).

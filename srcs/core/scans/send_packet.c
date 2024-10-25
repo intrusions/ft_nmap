@@ -40,14 +40,22 @@ bool send_tcp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uin
     return true;
 }
 
-bool send_udp_packet(int32_t sockfd, sockaddr_in *dest, uint16_t port, uint16_t src_port)
+bool send_udp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uint16_t port)
 {
     t_udp_packet packet;
     memset(&packet, 0, sizeof(t_udp_packet));
 
-    packet.hdr.source = htons(src_port);
+    packet.hdr.source = htons(data->opts.source_port);
     packet.hdr.dest = htons(port);
     packet.hdr.len = htons(sizeof(t_udp_packet));
+
+    if (data->opts.badsum) {
+        if (!udp_checksum(dest, &packet, "0.0.0.0"))
+            return false;
+    } else {
+        if (!udp_checksum(dest, &packet, data->src_ip))
+            return false;
+    }
     
     if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {
         __log_error("sendto error");
