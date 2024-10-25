@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-static bool reverse_one_dns(char *addr_in, char *addr)
+static bool resolve_one_dns(char *addr_in, char *addr)
 {
     addrinfo hints;
     addrinfo *addr_info, *ptr;
@@ -40,7 +40,7 @@ static bool reverse_one_dns(char *addr_in, char *addr)
     return true;
 }
 
-bool reverse_all_dns(t_global_data *data)
+bool resolve_dns(t_global_data *data)
 {
     uint8_t nb_addr_in = 0;
     while (data->opts.addr_in[nb_addr_in])
@@ -60,7 +60,7 @@ bool reverse_all_dns(t_global_data *data)
 
     
     for (uint8_t i = 0; i < nb_addr_in; i++) {
-        if (!reverse_one_dns(data->opts.addr_in[i], data->opts.addr[i])) {
+        if (!resolve_one_dns(data->opts.addr_in[i], data->opts.addr[i])) {
             free_str_arr(data->opts.addr_in);
             free_str_arr(data->opts.addr);
             return false;

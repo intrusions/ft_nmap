@@ -110,10 +110,10 @@ bool set_pcap_filter(pcap_t **handle, char *serv_addr, uint16_t port);
 bool pcap_initialization(pcap_t **handle);
 
 /*
-* Perform reverse DNS lookups for all IP addresses in the global data structure.
-* @param data: pointer to the global data structure containing the IP addresses.
-* @return true if reverse DNS lookups were successful, false otherwise.
+* Perform resolve DNS lookups for all IP addresses/hostname in the global data structure.
+* @param data: pointer to the global data structure containing the IP addresses/hostname.
+* @return true if resolve DNS were successful, false otherwise.
 */
-bool reverse_all_dns(t_global_data *data);
+bool resolve_dns(t_global_data *data);
 
 #endif /* NETWORK_H */

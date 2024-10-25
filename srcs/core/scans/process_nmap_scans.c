@@ -79,7 +79,7 @@ static bool perform_port_scan(t_global_data *data, int32_t tcp_sockfd, int32_t u
         if (!packed_sended)
             continue ;
 
-        uint8_t scan_response = NO_RESPONSE; // memory error fix, but wtf?
+        uint8_t scan_response = NO_RESPONSE; // memory error fixed, but wtf?
         if (!recv_packet(handle, &scan_response))
             return false;
         

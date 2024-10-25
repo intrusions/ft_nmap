@@ -51,7 +51,7 @@ SRCS :=                                  \
     core/scans/send_packet.c             \
     core/scans/recv_packet.c             \
     core/scans/set_pcap_filter.c         \
-    core/network/reverse_dns.c           \
+    core/network/resolve_dns.c           \
     core/network/get_src_ip.c            \
     core/socket/open_sockfd.c            \
     core/utils/ft_split.c                \
