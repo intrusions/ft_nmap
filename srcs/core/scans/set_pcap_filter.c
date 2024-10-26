@@ -6,9 +6,9 @@
 
 static bool create_pcap_filter(char **buffer, const char *serv_addr, uint16_t port)
 {
-    const char filter_str[] = "(src host %s and src port %d) and ((tcp[tcpflags] & tcp-rst != 0) \
-                                   or ((tcp[tcpflags] & (tcp-syn | tcp-ack)) == (tcp-syn | tcp-ack)) \
-                                   or icmp)";
+    const char filter_str[] = "(src host %s) and ((src port %d and ((tcp[tcpflags] & tcp-rst != 0) \
+                                or ((tcp[tcpflags] & (tcp-syn | tcp-ack)) == (tcp-syn | tcp-ack)))) \
+                                or icmp)";
 
     int32_t size = snprintf(NULL, 0, filter_str, serv_addr, port) + 1;
 
