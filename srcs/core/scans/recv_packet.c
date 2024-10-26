@@ -74,7 +74,7 @@ bool recv_packet(pcap_t *handle, uint8_t *response_state)
     
     int32_t retval = select(pcap_fd + 1, &readfds, NULL, NULL, &tv);
     if (retval == -1) {
-        __log_error("socket error:");
+        perror("select error:");
         return false;
     }
     

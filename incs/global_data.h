@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define __log_error(error) (void)fprintf(stderr, "%s: %s\n", error, strerror(errno))
-
 typedef struct timespec timespec;
 
 typedef struct {

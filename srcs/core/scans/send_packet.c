@@ -33,7 +33,7 @@ bool send_tcp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uin
 
 
     if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {
-        __log_error("sendto error");
+        perror("sendto error");
         return false;        
     }
 
@@ -58,7 +58,7 @@ bool send_udp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uin
     }
     
     if (sendto(sockfd, &packet, sizeof(packet), 0, (const sockaddr *)dest, sizeof(*dest)) <= 0) {
-        __log_error("sendto error");
+        perror("sendto error");
         return false;        
     }
 

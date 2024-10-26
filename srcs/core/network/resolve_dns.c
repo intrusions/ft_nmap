@@ -29,7 +29,7 @@ static bool resolve_one_dns(char *addr_in, char *addr)
             curr_addr = &(ipv4->sin_addr);
 
             if (!inet_ntop(ptr->ai_family, curr_addr, addr, INET6_ADDRSTRLEN)) {
-                __log_error("inet_ntop error");
+                perror("inet_ntop error");
                 return false;
             }
             break ;

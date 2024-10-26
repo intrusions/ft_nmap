@@ -6,8 +6,8 @@
 bool open_file(char *file, FILE **stream)
 {
     char *mode = "a";
-    *stream = fopen(file, mode);
 
+    *stream = fopen(file, mode);
     if (!*stream) {
         perror("fopen error");
         return false;
