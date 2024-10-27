@@ -15,10 +15,6 @@
 
 #define NUM_SCAN_TYPE   6
 
-#define TCP_SYN_FLAG    0x02
-#define TCP_RST_FLAG    0x04
-#define TCP_ACK_FLAG    0x10
-
 #define PORT_STATE_CLOSED           0x1 << 0
 #define PORT_STATE_OPEN             0x1 << 1
 #define PORT_STATE_FILTERED         0x1 << 2

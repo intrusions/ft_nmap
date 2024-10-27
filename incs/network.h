@@ -14,6 +14,7 @@
 typedef struct sockaddr_in  sockaddr_in;
 typedef struct sockaddr     sockaddr;
 typedef struct addrinfo     addrinfo;
+typedef struct icmphdr      icmphdr;
 typedef struct tcphdr       tcphdr;
 typedef struct udphdr       udphdr;
 

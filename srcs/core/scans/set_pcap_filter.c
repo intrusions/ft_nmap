@@ -4,19 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool create_pcap_filter(char **buffer, const char *serv_addr, uint16_t port)
+static bool create_pcap_filter(char **buffer, char *serv_addr, uint16_t port)
 {
-    const char filter_str[] = "(src host %s) and ((src port %d and ((tcp[tcpflags] & tcp-rst != 0) \
-                                or ((tcp[tcpflags] & (tcp-syn | tcp-ack)) == (tcp-syn | tcp-ack)))) \
-                                or icmp)";
+    char filter_str[] = "(src host %s) and ((src port %d and ((tcp[tcpflags] & tcp-rst != 0) \
+                        or ((tcp[tcpflags] & (tcp-syn | tcp-ack)) == (tcp-syn | tcp-ack)))) \
+                        or (icmp and icmp[28:2] == %d))";
 
-    int32_t size = snprintf(NULL, 0, filter_str, serv_addr, port) + 1;
+    int32_t size = snprintf(NULL, 0, filter_str, serv_addr, port, port) + 1;
 
     *buffer = (char *)malloc(size);
     if (!*buffer)
         return false;
 
-    snprintf(*buffer, size, filter_str, serv_addr, port);
+    snprintf(*buffer, size, filter_str, serv_addr, port, port);
     return true;
 }
 

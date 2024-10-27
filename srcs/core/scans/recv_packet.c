@@ -6,18 +6,18 @@
 #include <errno.h>
 #include <netinet/ip_icmp.h>
 
-static void recv_packet_handler(uint8_t *state, const struct pcap_pkthdr *header, const u_char *packet)
+static void recv_packet_handler(uint8_t *state, const struct pcap_pkthdr *header, const uint8_t *packet)
 {
     (void)header;
     uint8_t *response_state = (uint8_t *)state;
 
-    const u_char *ip_header;
-    const u_char *tcp_header;
-    const u_char *icmp_header;
+    const uint8_t *ip_header;
+    const uint8_t *tcp_header;
+    const uint8_t *icmp_header;
 
-    int ethernet_header_length = 14;
-    int ip_header_length;
-    int tcp_header_length;
+    int32_t ethernet_header_length = 14;
+    int32_t ip_header_length;
+    int32_t tcp_header_length;
 
     ip_header = packet + ethernet_header_length;
     ip_header_length = ((*ip_header) & 0x0F) * 4;
@@ -28,14 +28,14 @@ static void recv_packet_handler(uint8_t *state, const struct pcap_pkthdr *header
         tcp_header_length = ((*(tcp_header + 12)) & 0xF0) >> 4;
         tcp_header_length = tcp_header_length * 4;
 
-        struct tcphdr *tcp_hdr = (struct tcphdr *)tcp_header;
-        unsigned char flags = tcp_hdr->th_flags;
+        tcphdr *tcp_hdr = (tcphdr *)tcp_header;
+        uint8_t flags = tcp_hdr->th_flags;
 
-        if (flags & TCP_RST_FLAG) {
+        if (flags & TH_RST) {
             *response_state = TCP_RST_PCKT;
             return ;
         } 
-        if ((flags & TCP_SYN_FLAG) && (flags & TCP_ACK_FLAG)) {
+        if ((flags & TH_SYN) && (flags & TH_ACK)) {
             *response_state = TCP_SYN_ACK_PCKT;
             return ;
         }
@@ -43,9 +43,8 @@ static void recv_packet_handler(uint8_t *state, const struct pcap_pkthdr *header
     else if (*(ip_header + 9) == IPPROTO_ICMP) {
 
         icmp_header = packet + ethernet_header_length + ip_header_length;
-        struct icmphdr *icmp_hdr = (struct icmphdr *)icmp_header;
+        icmphdr *icmp_hdr = (icmphdr *)icmp_header;
 
-        // destination unreachable && port unreachable
         if (icmp_hdr->type == 3 && icmp_hdr->code == 3) {
             *response_state = ICMP_PCKT_T3_C3;
             return ; 
