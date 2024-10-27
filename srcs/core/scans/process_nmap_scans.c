@@ -89,8 +89,6 @@ static bool perform_port_scan(t_global_data *data, int32_t tcp_sockfd, int32_t u
             scan_types[i],
             get_port_state(scan_types[i], scan_response)
         );
-
-        random_usleep();
     }
     
     return true;

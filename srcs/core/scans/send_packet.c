@@ -1,6 +1,7 @@
 #include "global_data.h"
 #include "network.h"
 #include "scanner.h"
+#include "utils.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -37,6 +38,7 @@ bool send_tcp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uin
         return false;        
     }
 
+    tcp_random_usleep();
     return true;
 }
 
@@ -62,5 +64,6 @@ bool send_udp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uin
         return false;        
     }
 
+    udp_random_usleep();
     return true;
 }

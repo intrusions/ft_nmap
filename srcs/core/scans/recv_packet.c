@@ -60,7 +60,7 @@ static void recv_packet_handler(uint8_t *state, const struct pcap_pkthdr *header
 
 bool recv_packet(pcap_t *handle, uint8_t *response_state)
 {
-    struct timeval tv = {0, 250000};
+    struct timeval tv = {0, 500000};
     fd_set readfds;
     FD_ZERO(&readfds);
     

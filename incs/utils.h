@@ -11,7 +11,13 @@
 /*
 * Sleep for a random interval between 1000 and 2000 microseconds.
 */
-void random_usleep(void);
+void tcp_random_usleep(void);
+
+/*
+* Sleep for a random interval between 750000 and 1500000 microseconds.
+*/
+void udp_random_usleep(void);
+
 
 /*
 * Randomize the order of ports in the provided array.
