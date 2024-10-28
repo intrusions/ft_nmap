@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
+#include <stdlib.h>
 
 bool send_tcp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uint16_t port, uint8_t scan_type)
 {
@@ -47,7 +48,8 @@ bool send_udp_packet(t_global_data *data, int32_t sockfd, sockaddr_in *dest, uin
     t_udp_packet packet;
     memset(&packet, 0, sizeof(t_udp_packet));
 
-    packet.hdr.source = htons(data->opts.source_port);
+    uint16_t random_source_port = 1000 + rand() % 64000;
+    packet.hdr.source = htons(random_source_port);
     packet.hdr.dest = htons(port);
     packet.hdr.len = htons(sizeof(t_udp_packet));
 

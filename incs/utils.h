@@ -18,7 +18,6 @@ void tcp_random_usleep(void);
 */
 void udp_random_usleep(void);
 
-
 /*
 * Randomize the order of ports in the provided array.
 * @param array: pointer to the array of ports.

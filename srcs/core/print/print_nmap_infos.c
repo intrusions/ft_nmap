@@ -39,7 +39,7 @@ void print_nmap_infos(t_global_data *data)
     
     /* self info */
     fprintf(data->opts.output, "[*] Source Ip-Address    : %s\n", data->src_ip);
-    fprintf(data->opts.output, "[*] Source Port          : %d\n", data->opts.source_port);
+    fprintf(data->opts.output, "[*] Source Port          : %d (Except for UDP scan)\n", data->opts.source_port);
     
     print_dash_line(data->opts.output);
 }

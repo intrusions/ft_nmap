@@ -10,7 +10,6 @@ void udp_random_usleep(void)
     usleep(delay);
 }
 
-
 void tcp_random_usleep(void)
 {
     srand(time(NULL));
