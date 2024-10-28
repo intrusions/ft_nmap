@@ -5,12 +5,14 @@
 
 static char *state_to_str(uint8_t state)
 {
-    if (state == PORT_STATE_CLOSED)
+    if (state == PORT_STATE_OPEN)
+        return "open";
+    else if (state == PORT_STATE_CLOSED)
         return "closed";
     else if (state == PORT_STATE_FILTERED)
         return "filtered";
-    else if (state == PORT_STATE_OPEN)
-        return "open";
+    else if (state == PORT_STATE_UNFILTERED)
+        return "unfiltered";
     else if (state == PORT_STATE_OPEN_FILTERED)
         return "open|filtered";
     else if (state == PORT_STATE_CLOSED_FILTERED)
